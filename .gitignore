@@ -1,3 +1,9 @@
+# My ignores.
+*~
+local/
+
+
+# Supplied by github for Python project.
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
