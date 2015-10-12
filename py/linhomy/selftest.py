@@ -16,9 +16,15 @@ if __name__ == '__main__':
 
     import linhomy
     import linhomy.fibonacci
+    import linhomy.rules
     import linhomy.tools
 
-    modules = [linhomy, linhomy.fibonacci, linhomy.tools]
+    modules = [
+        linhomy,
+        linhomy.fibonacci,
+        linhomy.rules,
+        linhomy.tools,
+    ]
 
     # TODO: Pick up 'verbose' from the command line?
     for mod in modules:

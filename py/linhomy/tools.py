@@ -1,5 +1,13 @@
 '''Tools
 
+>>> def roundtrip(s):
+...     b = bytes_from_str(s)
+...     s2 = str_from_bytes(b)
+...     return list(iterbytes(b)), s2
+>>> roundtrip('0123')
+([0, 1, 2, 3], '0123')
+
+
 TODO: What about slices?  Present behaviour is undefined.
 >>> @grow_list
 ... def SQUARES(self):
@@ -16,12 +24,24 @@ from __future__ import unicode_literals
 
 from functools import update_wrapper
 from .six import iterbytes
+from .six import PY2, PY3
 
 def str_from_bytes(b):
 
     # TODO: Implement base 36 string conversion.
     # The str('') is to avoid result being Unicode in Python2.
     return str('').join(map(str, iterbytes(b)))
+
+
+if PY3:
+    def bytes_from_str(s):
+        # TODO: Implement base 36 string conversion.
+        return bytes(map(int, s))
+
+if PY2:
+    def bytes_from_str(s):
+        # TODO: Implement base 36 string conversion.
+        return str('').join(chr(int(c)) for c in s)
 
 
 def grow_list(grow):
