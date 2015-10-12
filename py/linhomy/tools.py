@@ -15,6 +15,14 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from functools import update_wrapper
+from .six import iterbytes
+
+def str_from_bytes(b):
+
+    # TODO: Implement base 36 string conversion.
+    # The str('') is to avoid result being Unicode in Python2.
+    return str('').join(map(str, iterbytes(b)))
+
 
 def grow_list(grow):
     '''Return list where grow supplies missing elements.
