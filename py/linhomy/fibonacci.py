@@ -5,6 +5,10 @@ TODO: What about slices?  Present behaviour is undefined.
 144
 
 >>> from .tools import str_from_bytes
+>>> list(map(str_from_bytes, FIB_WORDS[0]))
+['']
+>>> list(map(str_from_bytes, FIB_WORDS[1]))
+['1']
 >>> list(map(str_from_bytes, FIB_WORDS[4]))
 ['1111', '112', '121', '211', '22']
 
@@ -26,6 +30,13 @@ TODO: What about slices?  Present behaviour is undefined.
 2121 1001
 2211 22
 222 30
+
+>>> list(map(str_from_bytes, INDEXES[0]))
+['00']
+>>> list(map(str_from_bytes, INDEXES[1]))
+['01']
+>>> list(map(str_from_bytes, INDEXES[5]))
+['05', '0200', '0101', '0002', '0010', '13', '1000', '21']
 '''
 
 # For Python2 compatibility
@@ -60,7 +71,7 @@ def FIBONACCI(self):
 
 @grow_list
 def FIB_WORDS(self):
-    '''A GrowList that contains the Fibonacci words.
+    '''A GrowList that contains the Fibonacci words, by degree.
 
     Each word is a one-two sequence of bytes.
     '''
@@ -90,6 +101,15 @@ def word_from_index(index):
         _two * a + _one * b
        for a, b in pairs_from_items(iterbytes(index))
     )
+
+@grow_list
+def INDEXES(self):
+    '''A GrowList that contains the Fibonacci indexes, by degree.
+
+    Each index is an even-length sequence of bytes.
+    '''
+    words = FIB_WORDS[len(self)]
+    return tuple(map(index_from_word, words))
 
 
 if __name__ == "__main__":
