@@ -34,14 +34,39 @@ def str_from_bytes(b):
 
 
 if PY3:
+    bytes_from_ints = bytes
     def bytes_from_str(s):
         # TODO: Implement base 36 string conversion.
         return bytes(map(int, s))
 
 if PY2:
+    def bytes_from_ints(items):
+
+        return str('').join(map(chr, items))
+
     def bytes_from_str(s):
         # TODO: Implement base 36 string conversion.
         return str('').join(chr(int(c)) for c in s)
+
+def pairs_from_items(items):
+    '''Iterate over items, two items at a time.
+
+    Ignores any odd item left over at end.
+    '''
+
+    items = iter(items)
+    return zip(items, items)
+
+
+def items_from_pairs(pairs):
+    '''Iterate over pairs, one item at a time.
+
+    Roughly equivalent to itertools.chain.from_iterable.
+    '''
+
+    for a, b in pairs:
+        yield a
+        yield b
 
 
 def grow_list(grow):
