@@ -15,12 +15,14 @@ if __name__ == '__main__':
     import doctest
 
     import linhomy
+    import linhomy.classtools
     import linhomy.fibonacci
     import linhomy.rules
     import linhomy.tools
 
     modules = [
         linhomy,
+        linhomy.classtools,
         linhomy.fibonacci,
         linhomy.rules,
         linhomy.tools,

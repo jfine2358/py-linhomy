@@ -2,10 +2,16 @@
 
 '''
 
+# For Python2 compatibility
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 
 # Exclude all keys provided by the empty class.
 excluded_classdict_keys = set(
-    type('name', (object,), {}).__dict__.keys()
+    type(str('name'), (object,), {}).__dict__.keys()
 )
 
 
@@ -24,7 +30,7 @@ def copy_classdict(classdict):
     >>> copy_classdict(dict(__doc__=None, __module__='something'))
     {}
 
-    >>> copy_classdict(dict(__doc__='docstring'))
+    >>> copy_classdict(dict(__doc__=str('docstring')))
     {'__doc__': 'docstring'}
 
     '''
@@ -32,14 +38,14 @@ def copy_classdict(classdict):
     # Copy, omitting items to be excluded.
     copy_of_classdict = dict(
         (key, value)
-        for (key, value) in classdict.iteritems()
+        for (key, value) in classdict.items()
         if key not in excluded_classdict_keys
         )
 
     # If not None, add the docstring.
-    docstring = classdict['__doc__']
+    docstring = classdict[str('__doc__')]
     if docstring is not None:
-        copy_of_classdict['__doc__'] = docstring
+        copy_of_classdict[str('__doc__')] = docstring
 
     return copy_of_classdict
 
@@ -66,7 +72,7 @@ def unclass(cls):
     From the class tuple we can create a class
     >>> myclass = type(*mytuple)
     >>> myclass
-    <class 'jfinetools.classtools.mytuple'>
+    <class 'linhomy.classtools.mytuple'>
 
     '''
 
@@ -80,6 +86,6 @@ def unclass(cls):
 if __name__ == '__main__':
 
     import doctest
-    import jfinetools.classtools as this_module
+    import linhomy.classtools as this_module
     reload(this_module)
-    print doctest.testmod(this_module)
+    print(doctest.testmod(this_module))
