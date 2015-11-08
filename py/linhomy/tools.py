@@ -18,16 +18,13 @@ TODO: What about slices?  Present behaviour is undefined.
 
 >>> import itertools
 >>> def grow(key_lists):
-...     if not key_lists:
-...         return ('',)
-...     prev = key_lists[-1]
 ...     return tuple(
 ...         head + tail
 ...         for (head, tail)
 ...         in itertools.product(('a', 'b'), key_lists[-1])
 ...     )
 
->>> wordss = KeyLists(grow, len)
+>>> wordss = KeyLists([('',)], grow, len)
 >>> wordss[3]
 ('aaa', 'aab', 'aba', 'abb', 'baa', 'bab', 'bba', 'bbb')
 
@@ -118,16 +115,21 @@ class KeyLists:
     '''Self-growing collection of key lists
     '''
 
-    def __init__(self, grow, degree):
+    def __init__(self, initial, grow, degree):
+        '''Create from initial values, grow and degree functions.'''
 
         self.degree = degree
         self._grow = grow
         self._key_lists = []
         self._lookup_dicts =  []
 
+        for key_list in initial:
+            self._append(key_list)
+
 
     def __getitem__(self, deg):
 
+        # TODO: Allow (deg, index) as argument?
         key_lists = self._key_lists
         while len(key_lists) <= deg:
             new_key_list = self._grow(key_lists)
