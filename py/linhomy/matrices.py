@@ -14,6 +14,15 @@ array([[1, 1, 1],
        [4, 5, 6],
        [6, 8, 9]])
 
+>>> IC_from_FLAG[3]
+array([[ 3,  1, -1],
+       [ 0, -3,  2],
+       [-2,  2, -1]])
+
+>>> numpy.dot(FLAG_from_IC[3], IC_from_FLAG[3])
+array([[1, 0, 0],
+       [0, 1, 0],
+       [0, 0, 1]])
 '''
 
 # For Python2 compatibility
@@ -29,6 +38,26 @@ from .fibonacci import FIBONACCI
 from .tools import grow_list
 from .data import IC_flag
 
+
+def linalg_int_inv(matrix):
+    '''Compute the integer inverse of a matrix.'''
+
+    shape = matrix.shape
+
+    # Compute inverse and cast to integer matrix.
+    tmp = numpy.linalg.inv(matrix)
+    inverse = numpy.zeros(shape, int)
+    inverse = numpy.rint(tmp, inverse)
+
+    # Check we actually have the inverse.
+    expect = numpy.eye(shape[0], dtype=int)
+    actual = numpy.dot(matrix, inverse)
+    if not numpy.array_equal(actual, expect):
+        raise ValueError
+
+    return inverse
+
+
 def fib_zeros_array(*argv):
     '''Return array with shape (FIB[argv[0] + 1], ...).
     '''
@@ -37,6 +66,16 @@ def fib_zeros_array(*argv):
     value = numpy.zeros(shape, int)
     return value
 
+def invert_grow_list(matrices):
+
+    @grow_list
+    def inverse(self):
+
+        deg = len(self)
+        matrix = matrices[deg]
+        return linalg_int_inv(matrix)
+
+    return inverse
 
 @grow_list
 def FLAG_from_IC(self):
@@ -48,3 +87,5 @@ def FLAG_from_IC(self):
         value[:,i] = list(map(int, line.split()[1:]))
 
     return value
+
+IC_from_FLAG = invert_grow_list(FLAG_from_IC)
