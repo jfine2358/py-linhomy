@@ -52,6 +52,7 @@ from .tools import grow_list
 from .tools import bytes_from_ints
 from .tools import items_from_pairs
 from .tools import pairs_from_items
+from .tools import key_lists_from_fn
 
 
 # Useful constants.
@@ -69,19 +70,28 @@ def FIBONACCI(self):
 
     return self[-2] + self[-1]
 
-@grow_list
-def FIB_WORDS(self):
-    '''A GrowList that contains the Fibonacci words, by degree.
+
+@key_lists_from_fn
+def FIB_WORDS():
+    '''A KeysList for Fibonacci words.
 
     Each word is a one-two sequence of bytes.
     '''
-    if len(self) < 2:
-        return [(b'',), (b'\x01',)][len(self)]
+    initial = [(b'',), (b'\x01',)]
 
-    return tuple(itertools.chain(
-        (b'\x01' + i for i in self[-1]),
-        (b'\x02' + i for i in self[-2]),
-    ))
+    def grow(key_lists):
+
+        n = len(key_lists)
+        return tuple(itertools.chain(
+            (b'\x01' + i for i in key_lists[n-1]),
+            (b'\x02' + i for i in key_lists[n-2]),
+        ))
+
+    def degree(key):
+        return sum(iterbytes(key))
+
+    return locals()
+
 
 def index_from_word(word):
 

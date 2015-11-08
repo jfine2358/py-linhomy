@@ -159,6 +159,12 @@ class KeyLists:
         return deg, locn
 
 
+def key_lists_from_fn(fn):
+
+    kwargs = fn()
+    return KeyLists(**kwargs)
+
+
 if __name__ == "__main__":
     import doctest
     print(doctest.testmod())
