@@ -23,6 +23,16 @@ array([[ 3,  1, -1],
 array([[1, 0, 0],
        [0, 1, 0],
        [0, 0, 1]])
+
+Each column is an expansion, with power of 2 ones.
+>>> CD_from_IC[3]
+array([[1, 1, 1],
+       [0, 1, 0],
+       [0, 0, 1]])
+
+Expansion of [ICIC is CCCC, CCD, DCC, DD].
+>>> numpy.dot(CD_from_IC[4], [0, 0, 0, 0, 1])
+array([1, 1, 0, 1, 1])
 '''
 
 # For Python2 compatibility
@@ -32,9 +42,11 @@ from __future__ import print_function
 from __future__ import unicode_literals
 __metaclass__ = type
 
+import itertools
 import numpy
 
 from .fibonacci import FIBONACCI
+from .fibonacci import FIB_WORDS
 from .tools import grow_list
 from .data import IC_flag
 
@@ -89,3 +101,34 @@ def FLAG_from_IC(self):
     return value
 
 IC_from_FLAG = invert_grow_list(FLAG_from_IC)
+
+
+@grow_list
+def CD_from_IC(self):
+
+    # Prepare for the double loop.
+    deg = len(self)
+    value = fib_zeros_array(deg, deg)
+    words = FIB_WORDS[deg]
+    index = words.index
+
+    # The columns give the CD expansion of an IC word.
+    for j, ic_word in enumerate(words):
+
+        # Compute factors needed for the expansion.
+        factors = []
+        for ones in ic_word.split(b'\x02'):
+            if ones:
+                factors.append((ones,))
+            factors.append((b'\x01\x01', b'\x02'))
+        del factors[-1]
+
+        # Iterate of the product of the factors.
+        for w in itertools.product(*factors):
+            cd_word = b''.join(w)
+            i = index(cd_word)
+            value[i,j] += 1     # Record the contribution.
+
+    return value
+
+IC_from_CD = invert_grow_list(CD_from_IC)
