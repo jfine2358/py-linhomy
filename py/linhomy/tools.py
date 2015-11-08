@@ -14,13 +14,35 @@ TODO: What about slices?  Present behaviour is undefined.
 ...     return len(self) ** 2
 >>> SQUARES[0], SQUARES[1], SQUARES[5]
 (0, 1, 25)
+
+
+>>> import itertools
+>>> def grow(key_lists):
+...     if not key_lists:
+...         return ('',)
+...     prev = key_lists[-1]
+...     return tuple(
+...         head + tail
+...         for (head, tail)
+...         in itertools.product(('a', 'b'), key_lists[-1])
+...     )
+
+>>> wordss = KeyLists(grow, len)
+>>> wordss[3]
+('aaa', 'aab', 'aba', 'abb', 'baa', 'bab', 'bba', 'bbb')
+
+>>> wordss.degree('abab')
+4
+>>> wordss.index('abbaa')
+(5, 12)
 '''
 
 # For Python2 compatibility
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import unicode_literals
+#from __future__ import unicode_literals
+__metaclass__ = type
 
 from functools import update_wrapper
 from .six import iterbytes
@@ -90,6 +112,49 @@ def grow_list(grow):
     value = GrowList()
     # NOTE:  The updated=() is required.
     return update_wrapper(value, grow, updated=())
+
+
+class KeyLists:
+    '''Self-growing collection of key lists
+    '''
+
+    def __init__(self, grow, degree):
+
+        self.degree = degree
+        self._grow = grow
+        self._key_lists = []
+        self._lookup_dicts =  []
+
+
+    def __getitem__(self, deg):
+
+        key_lists = self._key_lists
+        while len(key_lists) <= deg:
+            new_key_list = self._grow(key_lists)
+            self._append(new_key_list)
+
+        return key_lists[deg]
+
+
+    def _append(self, key_list):
+
+        self._key_lists.append(key_list)
+
+        lookup = dict(
+            (key, i)
+            for (i, key)
+            in enumerate(key_list)
+        )
+
+        self._lookup_dicts.append(lookup)
+
+
+    def index(self, key):
+
+        deg = self.degree(key)
+        self[deg]               # Grow if need be.
+        locn = self._lookup_dicts[deg][key]
+        return deg, locn
 
 
 if __name__ == "__main__":
