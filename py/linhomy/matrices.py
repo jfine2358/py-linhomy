@@ -1,15 +1,18 @@
 '''
 
 
->>> IC_FLAG[2]
-array([[1, 3],
-       [1, 4]])
+>>> FLAG_from_IC[2]
+array([[1, 1],
+       [3, 4]])
 
+The flag vector of ICC is [1, 6, 9].
+>>> numpy.dot(FLAG_from_IC[3], [0, 0, 1])
+array([1, 6, 9])
 
->>> IC_FLAG[3]
-array([[1, 4, 6],
-       [1, 5, 8],
-       [1, 6, 9]])
+>>> FLAG_from_IC[3]
+array([[1, 1, 1],
+       [4, 5, 6],
+       [6, 8, 9]])
 
 '''
 
@@ -36,12 +39,12 @@ def fib_zeros_array(*argv):
 
 
 @grow_list
-def IC_FLAG(self):
+def FLAG_from_IC(self):
 
     deg = len(self)
     value = fib_zeros_array(deg, deg)
 
     for i, line in enumerate(IC_flag[deg]):
-        value[i] = list(map(int, line.split()[1:]))
+        value[:,i] = list(map(int, line.split()[1:]))
 
     return value
