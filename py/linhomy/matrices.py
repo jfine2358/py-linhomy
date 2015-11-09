@@ -51,6 +51,28 @@ array([[0, 0, 0],
        [1, 0, 0],
        [0, 1, 0],
        [0, 0, 1]])
+
+
+>>> C_in_G[4]
+array([[1, 0, 0, 0, 0],
+       [0, 1, 0, 0, 0],
+       [0, 0, 1, 0, 0],
+       [0, 0, 0, 1, 1],
+       [0, 0, 0, 0, 1],
+       [0, 0, 0, 1, 0],
+       [0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 1]])
+
+>>> D_in_G[3]
+array([[0, 0, 0],
+       [0, 0, 0],
+       [0, 1, 0],
+       [0, 0, 0],
+       [0, 0, 0],
+       [1, 0, 0],
+       [0, 1, 0],
+       [0, 0, 1]])
+
 '''
 
 # For Python2 compatibility
@@ -65,8 +87,16 @@ import numpy
 
 from .fibonacci import FIBONACCI
 from .fibonacci import FIB_WORDS
+from .fibonacci import INDEXES
+from .fibonacci import index_from_word
+from .fibonacci import word_from_index
 from .tools import grow_list
 from .data import IC_flag
+from .rules import C_rule
+from .rules import D_rule
+from .six import iterbytes
+from .tools import bytes_from_ints
+
 
 
 def linalg_int_inv(matrix):
@@ -171,6 +201,7 @@ def C_in_CD(self):
     return value
 
 
+# TODO: Refactor creation of the C_in_X and D_in_X matrices.
 @grow_list
 def D_in_CD(self):
 
@@ -186,5 +217,51 @@ def D_in_CD(self):
         d_word = b'\x02' + word
         i = index(d_word)
         value[i,j] += 1     # Record the contribution.
+
+    return value
+
+
+@grow_list
+def C_in_G(self):
+
+    # Prepare for the single loop.
+    deg = len(self)
+    value = fib_zeros_array(deg + 1, deg)
+    indexes = INDEXES[deg]
+    index = INDEXES[deg + 1].index
+
+    # The columns give C in the G basis.
+    for j, g_index in enumerate(indexes):
+
+        # TODO: Rewrite to provide bytes-to-bytes C_rule.
+        g_index = tuple(iterbytes(g_index))
+        for c_index in C_rule(g_index):
+            c_index = bytes_from_ints(c_index)
+
+            i = index(c_index)
+            value[i,j] += 1     # Record the contribution.
+
+    return value
+
+
+@grow_list
+def D_in_G(self):
+
+    # Prepare for the single loop.
+    deg = len(self)
+    value = fib_zeros_array(deg + 2, deg)
+    indexes = INDEXES[deg]
+    index = INDEXES[deg + 2].index
+
+    # The columns give D in the G basis.
+    for j, g_index in enumerate(indexes):
+
+        # TODO: Rewrite to provide bytes-to-bytes D_rule.
+        g_index = tuple(iterbytes(g_index))
+        for d_index in D_rule(g_index):
+            d_index = bytes_from_ints(d_index)
+
+            i = index(d_index)
+            value[i,j] += 1     # Record the contribution.
 
     return value
