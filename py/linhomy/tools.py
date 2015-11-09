@@ -153,6 +153,8 @@ class KeyLists:
 
     def index(self, key):
 
+        # TOD0: this index not same as item index.
+        # TODO: This leads to confusion - eg CD_from_IC.
         deg = self.degree(key)
         self[deg]               # Grow if need be.
         locn = self._lookup_dicts[deg][key]
