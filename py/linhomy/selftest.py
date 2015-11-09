@@ -19,6 +19,7 @@ if __name__ == '__main__':
     import linhomy.data
     import linhomy.fibonacci
     import linhomy.matrices
+    import linhomy.product
     import linhomy.rules
     import linhomy.tools
 
@@ -28,6 +29,7 @@ if __name__ == '__main__':
         linhomy.data,
         linhomy.fibonacci,
         linhomy.matrices,
+        linhomy.product,
         linhomy.rules,
         linhomy.tools,
     ]
