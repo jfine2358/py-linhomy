@@ -18,6 +18,8 @@ from __future__ import print_function
 from __future__ import unicode_literals
 __metaclass__ = type
 
+import numpy
+
 from .fibonacci import FIB_WORDS
 from .data import P_flag
 from .matrices import fib_zeros_array
@@ -34,6 +36,35 @@ def word_from_IC(s):
 def index_from_IC(s):
 
     return FIB_WORDS.index(word_from_IC(s))
+
+
+def change_product_basis(product_triple, a, b, c):
+
+    n_a, n_b, n_c = product_triple.shape
+    value = numpy.zeros(product_triple.shape, int)
+    rows = numpy.reshape(product_triple, (n_a * n_b, n_c))
+
+    for i in range(n_a):
+        for j in range(n_b):
+
+            # Convolve the columns to get coefficients.
+            coefficients = [
+                r * s
+                # White space is to slow reader - pay attention.
+                for r in a[ :, i]
+                for s in b[ :, j]
+            ]
+
+            join_ic = sum(
+                c * r
+                for (c, r) in zip(coefficients, rows)
+            )
+
+            join_cd = numpy.dot(c, join_ic)
+            value[i, j, : ] = join_cd
+
+    return value
+
 
 
 # TODO: Check this - it only looks right.

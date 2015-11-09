@@ -321,3 +321,20 @@ def G_from_CD(self):
     return value
 
 CD_from_G = invert_grow_list(G_from_CD)
+
+
+@grow_list
+def G_from_FLAG(self):
+
+    deg = len(self)
+
+    return numpy.dot(
+        G_from_CD[deg],
+        numpy.dot(CD_from_IC[deg], IC_from_FLAG[deg])
+    )
+
+@grow_list
+def IC_from_G(self):
+
+    deg = len(self)
+    return numpy.dot(IC_from_CD[deg], CD_from_G[deg])

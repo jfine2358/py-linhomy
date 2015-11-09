@@ -22,6 +22,7 @@ if __name__ == '__main__':
     import linhomy.product
     import linhomy.rules
     import linhomy.tools
+    import linhomy.work
 
     modules = [
         linhomy,
@@ -32,6 +33,7 @@ if __name__ == '__main__':
         linhomy.product,
         linhomy.rules,
         linhomy.tools,
+        linhomy.work,
     ]
 
     # TODO: Pick up 'verbose' from the command line?
