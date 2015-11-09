@@ -161,7 +161,7 @@ def C_in_CD(self):
     words = FIB_WORDS[deg]
     index = FIB_WORDS[deg + 1].index
 
-    # The columns give the C expansion of an IC word.
+    # The columns give C in the CD basis.
     for j, word in enumerate(words):
 
         c_word = b'\x01' + word
@@ -180,7 +180,7 @@ def D_in_CD(self):
     words = FIB_WORDS[deg]
     index = FIB_WORDS[deg + 2].index
 
-    # The columns give the C expansion of an IC word.
+    # The columns give D in the CD basis.
     for j, word in enumerate(words):
 
         d_word = b'\x02' + word

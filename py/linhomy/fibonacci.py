@@ -112,14 +112,28 @@ def word_from_index(index):
        for a, b in pairs_from_items(iterbytes(index))
     )
 
-@grow_list
-def INDEXES(self):
-    '''A GrowList that contains the Fibonacci indexes, by degree.
+@key_lists_from_fn
+def INDEXES():
+    '''A KeyList that contains the Fibonacci indexes, by degree.
 
     Each index is an even-length sequence of bytes.
     '''
-    words = FIB_WORDS[len(self)]
-    return tuple(map(index_from_word, words))
+
+    initial = ()
+
+    def grow(key_list):
+        words = FIB_WORDS[len(key_list)]
+        return tuple(map(index_from_word, words))
+
+    def degree(index):
+
+        deg = 0
+        ints = iterbytes(index)
+        for d, c in zip(ints, ints):
+            deg += 3 + 2 * d + c
+        return deg
+
+    return locals()
 
 
 if __name__ == "__main__":
