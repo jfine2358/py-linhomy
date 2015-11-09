@@ -33,6 +33,24 @@ array([[1, 1, 1],
 Expansion of [ICIC is CCCC, CCD, DCC, DD].
 >>> numpy.dot(CD_from_IC[4], [0, 0, 0, 0, 1])
 array([1, 1, 0, 1, 1])
+
+
+>>> C_in_CD[3]
+array([[1, 0, 0],
+       [0, 1, 0],
+       [0, 0, 1],
+       [0, 0, 0],
+       [0, 0, 0]])
+
+>>> D_in_CD[3]
+array([[0, 0, 0],
+       [0, 0, 0],
+       [0, 0, 0],
+       [0, 0, 0],
+       [0, 0, 0],
+       [1, 0, 0],
+       [0, 1, 0],
+       [0, 0, 1]])
 '''
 
 # For Python2 compatibility
@@ -132,3 +150,41 @@ def CD_from_IC(self):
     return value
 
 IC_from_CD = invert_grow_list(CD_from_IC)
+
+
+@grow_list
+def C_in_CD(self):
+
+    # Prepare for the single loop.
+    deg = len(self)
+    value = fib_zeros_array(deg + 1, deg)
+    words = FIB_WORDS[deg]
+    index = FIB_WORDS[deg + 1].index
+
+    # The columns give the C expansion of an IC word.
+    for j, word in enumerate(words):
+
+        c_word = b'\x01' + word
+        i = index(c_word)
+        value[i,j] += 1     # Record the contribution.
+
+    return value
+
+
+@grow_list
+def D_in_CD(self):
+
+    # Prepare for the single loop.
+    deg = len(self)
+    value = fib_zeros_array(deg + 2, deg)
+    words = FIB_WORDS[deg]
+    index = FIB_WORDS[deg + 2].index
+
+    # The columns give the C expansion of an IC word.
+    for j, word in enumerate(words):
+
+        d_word = b'\x02' + word
+        i = index(d_word)
+        value[i,j] += 1     # Record the contribution.
+
+    return value
