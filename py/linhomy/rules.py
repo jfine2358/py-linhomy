@@ -82,6 +82,17 @@ def C_rule(index):
             tmp[3] += 1
             yield tuple(tmp)
 
+    # Looking into at least 6 further improves 9-3, 10-3 and 10-4
+    if len(index) >= 6:
+        if (
+            index[0]
+            and index[1] == index[3] == index[5] == 0
+        ):
+            tmp = list(index)
+            tmp[5] += 1
+            yield tuple(tmp)
+
+
     # Now yield (0, 0)-prefixed indexes, if possible.
     if a >= 0:
         a_seq = reversed(range(a)) #  a - 1, a - 2, ..., 0.
