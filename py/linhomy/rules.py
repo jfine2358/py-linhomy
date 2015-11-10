@@ -99,7 +99,8 @@ def C_rule(index):
         yield (1, 0, 0, 2)
 
     # Refactored to give general pattern - much better.
-    if 1 and bool_index == (1, 1, 0, 0):
+    # Use >= instead of == to give slight improvment.
+    if 1 and bool_index[:4] == (1, 1, 0, 0):
             tmp = list(index)
             tmp[1] -= 1
             tmp[3] += 2
@@ -110,7 +111,8 @@ def C_rule(index):
         yield (1, 0, 0, 2)
 
     # Refactored to give general pattern - much better.
-    if 1 and bool_index == (1, 0, 0, 1):
+    # Use >= instead of == to give slight improvment.
+    if 1 and bool_index[:4] == (1, 0, 0, 1):
             tmp = list(index)
             tmp[3] += 1
             yield tuple(tmp)
