@@ -75,7 +75,8 @@ def C_rule(index):
     yield (a, b + 1) + body
 
     # Now look further into the body.
-    if len(index) == 4:
+    # Using length at least 4 slightly improves 9-3, 10-3 and 10-4.
+    if len(index) >= 4:
         if index[0] and index[1] == index[3] == 0:
             tmp = list(index)
             tmp[3] += 1
