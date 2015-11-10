@@ -99,6 +99,7 @@ from linhomy.product import change_product_basis
 from linhomy.matrices import IC_from_CD
 from linhomy.matrices import CD_from_IC
 from linhomy.matrices import CD_from_FLAG
+from linhomy.matrices import CD_from_G
 
 def doit_CD(n, m):
 
@@ -181,3 +182,63 @@ print(' '.join(''.join(map(str, index)) for index in tmp))
 
 # In other words '1000' -> '1100' and '1001' (new).
 # And also '0101' -> '0201' and '0102' (new).
+
+print(INDEXES[6].index(b'\x00' * 6))
+# 6
+
+tmp = [0] * 13
+tmp[6] = 1
+
+cd_vector = list(numpy.dot(CD_from_G[6], tmp))
+print(cd_vector)
+# [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+
+print(
+    [
+        (c, e)
+        for (c, e) in zip(cd_vector, FIB_WORDS[6])
+        if c
+    ])
+# [(1, b'\x01\x02\x01\x02'), (-1, b'\x01\x02\x02\x01'), (-1, b'\x02\x01\x01\x02'), (1, b'\x02\x02\x01\x01')]
+
+# Compute (by hand) I applied to above (ie multiplication by C).
+
+CCDCD = tmp = C(C(D(C(D([(0,0)])))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+
+CCDDC = tmp = C(C(D(D(C([(0,0)])))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+
+DCCCD = tmp = D(C(C(C(D([(0,0)])))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+
+DDCCC = tmp = D(D(C(C(C([(0,0)])))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+
+# 23 0012 0004 0111 0103 1200 000100 1101 000001 010000
+# 23 0012 0004 0111 0103
+# 23 1002 1101 1200
+# 23
+
+# Hand calculation of signed sum give
+# (+) 000100 000001 010000
+# (-) 1002
+
+
+g_vector = list(doit_G(1, 6)[0][6])
+print(g_vector)
+# [0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0]
+
+# This agrees with the hand calculation.
+print([index for (i, index) in zip(g_vector, INDEXES[7]) if i])
+# [
+#     b'\x00\x01\x00\x00\x00\x00',
+#     b'\x00\x00\x00\x01\x00\x00',
+#     b'\x00\x00\x00\x00\x00\x01',
+#     b'\x01\x00\x00\x02'
+# ]
+
+# We apply D to this to get the negative.  It's straightforward.
+CCCD = tmp = C(C(C(D([(0,0)]))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+# 13 0002 0101 0200
