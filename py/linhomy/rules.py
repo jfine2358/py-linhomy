@@ -74,6 +74,8 @@ def C_rule(index):
     # Increment the first exponent of C.
     yield (a, b + 1) + body
 
+    bool_index = tuple(map(bool, index))
+
     # Now look further into the body.
     # Using length at least 4 slightly improves 9-3, 10-3 and 10-4.
     if len(index) >= 4:
@@ -93,12 +95,25 @@ def C_rule(index):
             yield tuple(tmp)
 
     # This makes 7-1 non-negative, and improves further.
-    if index == (1, 1, 0, 0):
+    if 0 and index == (1, 1, 0, 0):
         yield (1, 0, 0, 2)
 
+    # Refactored to give general pattern - much better.
+    if 1 and bool_index == (1, 1, 0, 0):
+            tmp = list(index)
+            tmp[1] -= 1
+            tmp[3] += 2
+            yield tuple(tmp)
+
     # This makes 7-3 non-negative, and improves further.
-    if index == (1, 0, 0, 1):
+    if 0 and index == (1, 0, 0, 1):
         yield (1, 0, 0, 2)
+
+    # Refactored to give general pattern - much better.
+    if 1 and bool_index == (1, 0, 0, 1):
+            tmp = list(index)
+            tmp[3] += 1
+            yield tuple(tmp)
 
     # Now yield (0, 0)-prefixed indexes, if possible.
     if a >= 0:
