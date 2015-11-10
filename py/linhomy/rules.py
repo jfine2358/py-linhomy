@@ -106,6 +106,13 @@ def C_rule(index):
             tmp[3] += 2
             yield tuple(tmp)
 
+    # Looking into at least 6 gives further improvements.
+    if 1 and bool_index[:6] == (1, 1, 0, 0, 0, 0):
+            tmp = list(index)
+            tmp[1] -= 1
+            tmp[5] += 2
+            yield tuple(tmp)
+
     # This makes 7-3 non-negative, and improves further.
     if 0 and index == (1, 0, 0, 1):
         yield (1, 0, 0, 2)
@@ -115,6 +122,12 @@ def C_rule(index):
     if 1 and bool_index[:4] == (1, 0, 0, 1):
             tmp = list(index)
             tmp[3] += 1
+            yield tuple(tmp)
+
+    # Looking into at least 6 gives further improvements.
+    if 1 and bool_index[:6] == (1, 0, 0, 0, 0, 1):
+            tmp = list(index)
+            tmp[5] += 1
             yield tuple(tmp)
 
     # Now yield (0, 0)-prefixed indexes, if possible.
