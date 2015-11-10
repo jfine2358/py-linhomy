@@ -248,3 +248,58 @@ print(' '.join(''.join(map(str, index)) for index in tmp))
 CDCD = tmp = C(D(C(D([(0,0)]))))
 print(' '.join(''.join(map(str, index)) for index in tmp))
 # 22 0011 0003 1100 1001 000000
+
+
+g_vector = list(doit_G(3, 4)[1][2])
+print(g_vector)                                   #!!
+# [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0]
+
+cd_vector = list(numpy.dot(CD_from_G[7], g_vector))
+print(cd_vector)
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, -1, 0, 0, -1, -1, 0, 0, 1, 0, 0]
+
+terms = [
+    (c, ''.join(map(str, ind)))
+    for (c, ind) in zip(cd_vector, FIB_WORDS[7])
+    if c
+]
+
+print(terms)
+# [
+#     (1, '12112'),
+#     (1, '12121'),
+#     (-1, '12211'),
+#     (-1, '21112'),
+#     (-1, '21121'),
+#     (1, '22111'),
+# ]
+
+tmp = C(D(C(C(D([(0,0)])))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+
+tmp = C(D(C(D(C([(0,0)])))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+
+tmp = C(D(D(C(C([(0,0)])))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+
+tmp = D(C(C(C(D([(0,0)])))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+
+tmp = D(C(C(D(C([(0,0)])))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+
+tmp = D(D(C(C(C([(0,0)])))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+
+# 23 0012 0004 1101 000001 1200 1002 000100
+# 23 0012 0004 1101 000001
+# 23 0012 0004
+# 23 1002 1101 1200
+# 23 1002 1101
+# 23
+
+
+tmp = D(C(D(C([(0,0)]))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+# 22 1001

@@ -96,6 +96,10 @@ def C_rule(index):
     if index == (1, 1, 0, 0):
         yield (1, 0, 0, 2)
 
+    # This makes 7-3 non-negative, and improves further.
+    if index == (1, 0, 0, 1):
+        yield (1, 0, 0, 2)
+
     # Now yield (0, 0)-prefixed indexes, if possible.
     if a >= 0:
         a_seq = reversed(range(a)) #  a - 1, a - 2, ..., 0.
