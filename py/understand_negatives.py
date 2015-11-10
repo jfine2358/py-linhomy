@@ -242,3 +242,9 @@ print([index for (i, index) in zip(g_vector, INDEXES[7]) if i])
 CCCD = tmp = C(C(C(D([(0,0)]))))
 print(' '.join(''.join(map(str, index)) for index in tmp))
 # 13 0002 0101 0200
+
+
+# We apply C to this to get the 'top' term.
+CDCD = tmp = C(D(C(D([(0,0)]))))
+print(' '.join(''.join(map(str, index)) for index in tmp))
+# 22 0011 0003 1100 1001 000000

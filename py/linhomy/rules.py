@@ -92,6 +92,9 @@ def C_rule(index):
             tmp[5] += 1
             yield tuple(tmp)
 
+    # This makes 7-1 non-negative, and improves further.
+    if index == (1, 1, 0, 0):
+        yield (1, 0, 0, 2)
 
     # Now yield (0, 0)-prefixed indexes, if possible.
     if a >= 0:
