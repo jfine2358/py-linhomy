@@ -3,7 +3,7 @@
 Sadly we get an error.  But at n=6 so might be easy to fix.  In
 winter 2014-15 calculations we got past 6.
 
->>> doit(2, 3)
+>>> doit_G(2, 3)
 array([[[1, 0, 0, 0, 0, 1, 0, 1],
         [0, 1, 1, 1, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 1, 0, 1]],
@@ -12,7 +12,7 @@ array([[[1, 0, 0, 0, 0, 1, 0, 1],
         [0, 0, 1, 0, 0, 0, 1, 0],
         [0, 0, 0, 0, 0, 0, 0, 1]]])
 
->>> doit(3, 3)
+>>> doit_G(3, 3)
 array([[[ 1,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  1],
         [ 0,  1,  1,  1,  0,  1,  0,  0,  0,  0,  0,  0,  0],
         [ 0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  1,  0]],
@@ -44,7 +44,7 @@ from .product import change_product_basis
 
 
 
-def doit(n, m):
+def doit_G(n, m):
 
     return change_product_basis(
         product_formula(n, m),
