@@ -45,15 +45,15 @@ Do the same if the first exponent of D is not zero.
 The remaining case.  If rank >= 1 and first exponent of D is zero we
 get an extra term, which increments the first two exponents of C.
 >>> list(D_rule((0, 0, 0, 0)))
-[(1, 0, 0, 0), (0, 1, 0, 1)]
+[(1, 0, 0, 0)]
 
 Everything else is just carried througn.
 >>> list(D_rule((0, 1, 0, 0)))
-[(1, 1, 0, 0), (0, 2, 0, 1)]
+[(1, 1, 0, 0)]
 >>> list(D_rule((0, 0, 1, 0)))
-[(1, 0, 1, 0), (0, 1, 1, 1)]
+[(1, 0, 1, 0)]
 >>> list(D_rule((0, 0, 0, 1)))
-[(1, 0, 0, 1), (0, 1, 0, 2)]
+[(1, 0, 0, 1)]
 '''
 
 # For Python2 compatibility
@@ -113,10 +113,8 @@ def D_rule(index):
     # Increment the first exponent of D.
     yield (a + 1, b) + body
 
-    if 0 and index == (0, 1, 0, 0):
-        yield (0, 1, 0, 2)
-
-    if a == 0 and body:
+    # Suppress this rule to improve zeros, especially d=6.
+    if 0 and a == 0 and body:
         (a_1, b_1), rest = body[:2], body[2:]
 
         # Increment the first two exponents of C.
