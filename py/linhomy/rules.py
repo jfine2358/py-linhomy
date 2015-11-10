@@ -74,6 +74,13 @@ def C_rule(index):
     # Increment the first exponent of C.
     yield (a, b + 1) + body
 
+    # Now look further into the body.
+    if len(index) == 4:
+        if index[0] and index[1] == index[3] == 0:
+            tmp = list(index)
+            tmp[3] += 1
+            yield tuple(tmp)
+
     # Now yield (0, 0)-prefixed indexes, if possible.
     if a >= 0:
         a_seq = reversed(range(a)) #  a - 1, a - 2, ..., 0.
@@ -93,6 +100,9 @@ def D_rule(index):
 
     # Increment the first exponent of D.
     yield (a + 1, b) + body
+
+    if 0 and index == (0, 1, 0, 0):
+        yield (0, 1, 0, 2)
 
     if a == 0 and body:
         (a_1, b_1), rest = body[:2], body[2:]
