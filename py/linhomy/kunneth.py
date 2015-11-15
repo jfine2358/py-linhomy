@@ -33,8 +33,9 @@ def iter_rows(n, m, condition):
     for i, ind1 in enumerate(INDEXES[n]):
         for j, ind2 in enumerate(INDEXES[m]):
 
+            # Skip if condition not satisfied.
             if condition and not condition(ind1, ind2):
-                break
+                continue
 
             lhs = product_format(
                 str('').join(map(str, iterbytes(ind1))),
@@ -74,7 +75,14 @@ def simple(ind1, ind2):
     return len(ind1) == len(ind2) == 2
 
 
+ZERO = b'\x00'[0]
+def rank_1_2(ind1, ind2):
 
+    # Skip the trivial cases.
+    if ind1[0] == ind1[0] == ZERO:
+        return {len(ind1), len(ind2)} == {2, 4}
+    else:
+        return False
 
 if __name__ == '__main__':
 
@@ -82,6 +90,7 @@ if __name__ == '__main__':
 
     lookup = dict(
         simple = simple,
+        rank_1_2 = rank_1_2,
     )
 
     condition = None
