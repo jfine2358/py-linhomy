@@ -84,6 +84,23 @@ def rank_1_2(ind1, ind2):
     else:
         return False
 
+def rank_1_3(ind1, ind2):
+
+    # Skip the trivial cases.
+    if ind1[0] == ind1[0] == ZERO:
+        return {len(ind1), len(ind2)} == {2, 6}
+    else:
+        return False
+
+def rank_2_2(ind1, ind2):
+
+    # Skip the trivial cases.
+    if ind1[0] == ind1[0] == ZERO:
+        return {len(ind1), len(ind2)} == {4}
+    else:
+        return False
+
+
 if __name__ == '__main__':
 
     import sys
@@ -91,6 +108,8 @@ if __name__ == '__main__':
     lookup = dict(
         simple = simple,
         rank_1_2 = rank_1_2,
+        rank_1_3 = rank_1_3,
+        rank_2_2 = rank_2_2,
     )
 
     condition = None
