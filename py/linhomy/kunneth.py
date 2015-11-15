@@ -69,9 +69,20 @@ def doit(condition=None):
                     print('\n')
 
 
+def simple(ind1, ind2):
+
+    return len(ind1) == len(ind2) == 2
+
+
+
+
 if __name__ == '__main__':
 
     import sys
+
+    lookup = dict(
+        simple = simple,
+    )
 
     condition = None
     if len(sys.argv) == 2:
