@@ -181,10 +181,26 @@ def D_rule(index):
 
 def product_rule(ind1, ind2):
 
+    # Convert to lists, remove leading D's.
+    ind1, ind2 = list(ind1), list(ind2)
+    d_count = ind1[0] + ind2[0]
+    ind1[0] = ind2[0] = 0
+
+    # Delegate, without leading D's.
+    for item in _product_rule_1(ind1, ind2):
+
+        value = list(item)      # Ensure no side-effests.
+        value[0] += d_count
+        yield list(value)
+
+
+def _product_rule_1(ind1, ind2):
+
     (d1, c1), b1 = ind1[:2], ind1[2:]
     (d2, c2), b2 = ind2[:2], ind2[2:]
 
-    yield (d1 + d2, c1 + c2)
+    yield [d1 + d2, c1 + c2]
+
 
 
 if __name__ == "__main__":
