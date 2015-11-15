@@ -26,12 +26,16 @@ def pretty_vector(vector):
     )
 
 
-def print_rows(n, m):
+def iter_rows(n, m, condition):
 
     matrix = doit_G(n, m)
 
     for i, ind1 in enumerate(INDEXES[n]):
         for j, ind2 in enumerate(INDEXES[m]):
+
+            if condition and not condition(ind1, ind2):
+                break
+
             lhs = product_format(
                 str('').join(map(str, iterbytes(ind1))),
                 str('').join(map(str, iterbytes(ind2))),
@@ -47,13 +51,30 @@ def print_rows(n, m):
 
             rhs = pretty_vector(value)
 
-            print(lhs, '=', rhs)
+            yield lhs, rhs
 
 
-for n in range(2, 11):
-    for m in range(1, n):
-        if 2 * m <= n:
+def doit(condition=None):
 
-            print(n, m)
-            print_rows(n - m, m)
-            print('\n')
+    for n in range(2, 11):
+        for m in range(1, n):
+            if 2 * m <= n:
+
+                rows = list(iter_rows(n-m, m, condition))
+                if rows:
+                    print(n, m)
+                    for row in rows:
+                        lhs, rhs = row
+                        print(lhs, '=', rhs)
+                    print('\n')
+
+
+if __name__ == '__main__':
+
+    import sys
+
+    condition = None
+    if len(sys.argv) == 2:
+        condition = lookup[sys.argv[1]]
+
+    doit(condition)
