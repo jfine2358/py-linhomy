@@ -54,6 +54,15 @@ Everything else is just carried througn.
 [(1, 0, 1, 0)]
 >>> list(D_rule((0, 0, 0, 1)))
 [(1, 0, 0, 1)]
+
+>>> _test_product((0, 0), (0, 0))
+'00'
+>>> _test_product((0, 1), (0, 2))
+'03'
+>>> _test_product((1, 0), (2, 0))
+'30'
+>>> _test_product((1, 3), (2, 4))
+'37'
 '''
 
 # For Python2 compatibility
@@ -61,6 +70,18 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
+
+
+def str_from_items(items):
+
+    # NOTE: The str is to prevent u'00' in Python2 tests.
+    return str(' ').join(
+        str('').join(map(str, item))
+        for item in items
+    )
+
+def _test_product(ind1, ind2):
+    return str_from_items(product_rule(ind1, ind2))
 
 
 def C_rule(index):
@@ -156,6 +177,14 @@ def D_rule(index):
 
         # Increment the first two exponents of C.
         yield (a, b + 1, a_1, b_1 + 1) + rest
+
+
+def product_rule(ind1, ind2):
+
+    (d1, c1), b1 = ind1[:2], ind1[2:]
+    (d2, c2), b2 = ind2[:2], ind2[2:]
+
+    yield (d1 + d2, c1 + c2)
 
 
 if __name__ == "__main__":
