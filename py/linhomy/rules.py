@@ -95,6 +95,20 @@ def C_rule(index):
     # Increment the first exponent of C.
     yield (a, b + 1) + body
 
+    for item in C_rule_extra(index):
+        yield item
+
+    # Now yield (0, 0)-prefixed indexes, if possible.
+    if a >= 0:
+        a_seq = reversed(range(a)) #  a - 1, a - 2, ..., 0.
+        b_seq = range(b, b + 2*a, 2) # b, b + 2, ..., b + 2*(a-1).
+
+        for a_1, b_1 in zip(a_seq, b_seq):
+            yield (0, 0, a_1, b_1) + body
+
+
+def C_rule_extra(index):
+
     bool_index = tuple(map(bool, index))
 
     # Now look further into the body.
@@ -150,14 +164,6 @@ def C_rule(index):
             tmp = list(index)
             tmp[5] += 1
             yield tuple(tmp)
-
-    # Now yield (0, 0)-prefixed indexes, if possible.
-    if a >= 0:
-        a_seq = reversed(range(a)) #  a - 1, a - 2, ..., 0.
-        b_seq = range(b, b + 2*a, 2) # b, b + 2, ..., b + 2*(a-1).
-
-        for a_1, b_1 in zip(a_seq, b_seq):
-            yield (0, 0, a_1, b_1) + body
 
 
 def D_rule(index):
