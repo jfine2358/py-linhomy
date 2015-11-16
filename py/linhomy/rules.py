@@ -122,30 +122,26 @@ def C_rule_extra(index):
             tmp[i] += 1
             yield tuple(tmp)
 
-    # Refactored to give general pattern - much better.
-    # Use >= instead of == to give slight improvment.
-    if 1 and bool_index[:4] == (1, 1, 0, 0):
+    if bool_index[:4] == (1, 1, 0, 0):
             tmp = list(index)
             tmp[1] -= 1
             tmp[3] += 2
             yield tuple(tmp)
 
     # Looking into at least 6 gives further improvements.
-    if 1 and bool_index[:6] == (1, 1, 0, 0, 0, 0):
+    if bool_index[:6] == (1, 1, 0, 0, 0, 0):
             tmp = list(index)
             tmp[1] -= 1
             tmp[5] += 2
             yield tuple(tmp)
 
-    # Refactored to give general pattern - much better.
-    # Use >= instead of == to give slight improvment.
-    if 1 and bool_index[:4] == (1, 0, 0, 1):
+    if bool_index[:4] == (1, 0, 0, 1):
             tmp = list(index)
             tmp[3] += 1
             yield tuple(tmp)
 
     # Looking into at least 6 gives further improvements.
-    if 1 and bool_index[:6] == (1, 0, 0, 0, 0, 1):
+    if bool_index[:6] == (1, 0, 0, 0, 0, 1):
             tmp = list(index)
             tmp[5] += 1
             yield tuple(tmp)
