@@ -81,7 +81,7 @@ ZERO = b'\x00'[0]
 def rank_1_2(ind1, ind2):
 
     # Skip the trivial cases.
-    if ind1[0] == ind1[0] == ZERO:
+    if ind1[0] == ind2[0] == ZERO:
         return {len(ind1), len(ind2)} == {2, 4}
     else:
         return False
@@ -89,7 +89,7 @@ def rank_1_2(ind1, ind2):
 def rank_1_3(ind1, ind2):
 
     # Skip the trivial cases.
-    if ind1[0] == ind1[0] == ZERO:
+    if ind1[0] == ind2[0] == ZERO:
         return {len(ind1), len(ind2)} == {2, 6}
     else:
         return False
@@ -97,7 +97,7 @@ def rank_1_3(ind1, ind2):
 def rank_2_2(ind1, ind2):
 
     # Skip the trivial cases.
-    if ind1[0] == ind1[0] == ZERO:
+    if ind1[0] == ind2[0] == ZERO:
         return {len(ind1), len(ind2)} == {4}
     else:
         return False
