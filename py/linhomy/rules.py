@@ -113,25 +113,14 @@ def C_rule_extra(index):
 
     # Now look further into the body.
     # Using length at least 4 slightly improves 9-3, 10-3 and 10-4.
-    if len(index) >= 4:
-        if index[0] and index[1] == index[3] == 0:
-            tmp = list(index)
-            tmp[3] += 1
-            yield tuple(tmp)
 
-    # Looking into at least 6 further improves 9-3, 10-3 and 10-4
-    if len(index) >= 6:
-        if (
-            index[0]
-            and index[1] == index[3] == index[5] == 0
-        ):
+    if index[0] and index[1] == 0:
+        for i in range(3, len(index), 2):
+            if index[i]:
+                break
             tmp = list(index)
-            tmp[5] += 1
+            tmp[i] += 1
             yield tuple(tmp)
-
-    # This makes 7-1 non-negative, and improves further.
-    if 0 and index == (1, 1, 0, 0):
-        yield (1, 0, 0, 2)
 
     # Refactored to give general pattern - much better.
     # Use >= instead of == to give slight improvment.
@@ -147,10 +136,6 @@ def C_rule_extra(index):
             tmp[1] -= 1
             tmp[5] += 2
             yield tuple(tmp)
-
-    # This makes 7-3 non-negative, and improves further.
-    if 0 and index == (1, 0, 0, 1):
-        yield (1, 0, 0, 2)
 
     # Refactored to give general pattern - much better.
     # Use >= instead of == to give slight improvment.
