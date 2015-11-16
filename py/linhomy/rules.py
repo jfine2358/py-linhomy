@@ -114,7 +114,7 @@ def C_rule_extra(index):
     # Now look further into the body.
     # Using length at least 4 slightly improves 9-3, 10-3 and 10-4.
 
-    if index[0] and index[1] == 0:
+    if bool_index[:2] == (1, 0):
         for i in range(3, len(index), 2):
             if index[i]:
                 break
@@ -122,18 +122,13 @@ def C_rule_extra(index):
             tmp[i] += 1
             yield tuple(tmp)
 
-    if bool_index[:4] == (1, 1, 0, 0):
-            tmp = list(index)
-            tmp[1] -= 1
-            tmp[3] += 2
-            yield tuple(tmp)
-
-    # Looking into at least 6 gives further improvements.
-    if bool_index[:6] == (1, 1, 0, 0, 0, 0):
-            tmp = list(index)
-            tmp[1] -= 1
-            tmp[5] += 2
-            yield tuple(tmp)
+    if bool_index[:2] == (1, 1):
+        for i in range(2, len(index), 2):
+            if bool_index[i] == bool_index[i+1] == 0:
+                tmp = list(index)
+                tmp[1] -= 1
+                tmp[i+1] += 2
+                yield tuple(tmp)
 
     if bool_index[:4] == (1, 0, 0, 1):
             tmp = list(index)
