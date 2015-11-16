@@ -107,7 +107,7 @@ def C_rule(index):
             yield (0, 0, a_1, b_1) + body
 
 
-def C_rule_extra(index):
+def C_rule_extra_AAA(index):
 
     bool_index = tuple(map(bool, index))
 
@@ -140,6 +140,24 @@ def C_rule_extra(index):
             tmp = list(index)
             tmp[5] += 1
             yield tuple(tmp)
+
+
+def C_rule_extra(index):
+
+    if index[0] == 0:
+        return
+
+    # Iterate over all the coefficients of C.
+    for i in range(3, len(index), 2):
+        tmp = list(index)
+
+        # Can we apply the special use previous rule?
+        if index[i-2] == 0:
+            tmp[i] += 1         # Usual increment this C rule.
+        else:
+            break
+
+        yield tuple(tmp)
 
 
 def D_rule(index):
