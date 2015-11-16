@@ -8,6 +8,8 @@ from __future__ import print_function
 from __future__ import unicode_literals
 __metaclass__ = type
 
+import sys
+
 from .fibonacci import INDEXES
 from .work import doit_G
 from .six import iterbytes
@@ -55,7 +57,7 @@ def iter_rows(n, m, condition):
             yield lhs, rhs
 
 
-def doit(condition=None):
+def doit(condition=None, file=sys.stdout):
 
     for n in range(2, 11):
         for m in range(1, n):
@@ -63,11 +65,11 @@ def doit(condition=None):
 
                 rows = list(iter_rows(n-m, m, condition))
                 if rows:
-                    print(n, m)
+                    print(n, m, file=file)
                     for row in rows:
                         lhs, rhs = row
-                        print(lhs, '=', rhs)
-                    print('\n')
+                        print(lhs, '=', rhs, file=file)
+                    print('\n', file=file)
 
 
 def simple(ind1, ind2):
@@ -104,6 +106,7 @@ def rank_2_2(ind1, ind2):
 if __name__ == '__main__':
 
     import sys
+    import os
 
     lookup = dict(
         simple = simple,
@@ -112,8 +115,16 @@ if __name__ == '__main__':
         rank_2_2 = rank_2_2,
     )
 
-    condition = None
-    if len(sys.argv) == 2:
-        condition = lookup[sys.argv[1]]
+    pairs = [
+        ('kunneth-' + key + '.txt', value)
+        for (key, value)
+        in lookup.items()
+    ]
 
-    doit(condition)
+    pairs.append(('kunneth.txt', None))
+    pairs.sort()
+
+    for filename, value in pairs:
+
+        with open(filename, 'w') as f:
+            doit(value, f)
