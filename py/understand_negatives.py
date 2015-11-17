@@ -364,3 +364,68 @@ for c, word in terms:
 # -1  #  24
 # -1  #  32 2001 2100
 #  1  #  32
+
+# Exploring
+
+# 8 1
+# [010000] * [01] = [020000] + [100000]
+# [000100] * [01] = [010100] + [000200]
+# [000001] * [01] = [010001] + [000101] + [000002]
+
+print('Exploring 8 1, rank 1, 3')
+
+i = INDEXES[7].index(b'\x00\x01\x00\x00\x00\x00')
+
+print(i)
+# 6
+g_row = [0] * 21
+g_row[6] = 1
+cd_row = list(numpy.dot(CD_from_G[7], g_row))
+print(cd_row)
+# [0, 0, 0, 0, 0, 0, 1, -1, 0, -1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+doit_CD(1, 7)[0]
+
+
+# The following confirms
+# [010000] * [01] = [020000] + [100000]
+# and gives insight into it rectification.
+
+# Find the index of the g-indexes.
+i = INDEXES[8].index(b'\x00\x02\x00\x00\x00\x00')
+j = INDEXES[8].index(b'\x01\x00\x00\x00\x00\x00')
+print(i, j)
+# 6 27
+
+# Convert into a CD vector.
+g_row = [0] * 34
+g_row[6] = g_row[27] = 1
+cd_value = list(numpy.dot(CD_from_G[8], g_row))
+
+# Split into C and D parts.
+c_cd_part, d_cd_part = cd_value[:21], cd_value[21:]
+
+# Express the parts using the G basis.
+c_g_part = numpy.dot(G_from_CD[7], c_cd_part)
+d_g_part = numpy.dot(G_from_CD[6], d_cd_part)
+
+
+print(list(c_g_part))
+print(list(d_g_part))
+# [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+# [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+
+# Turn the parts back into g-indexes.
+# >>> INDEXES[7][6]
+# b'\x00\x01\x00\x00\x00\x00'
+# >>> INDEXES[6][6]
+# b'\x00\x00\x00\x00\x00\x00'
+
+# Compute what C and D do on the g-indexes.
+# >>> from linhomy.rules import C_rule
+# >>> C_rule((0, 1, 0, 0, 0, 0))
+# <generator object C_rule at 0x7f1f8986fea0>
+# >>> list(C_rule((0, 1, 0, 0, 0, 0)))
+# [(0, 2, 0, 0, 0, 0)]
+# >>> list(D_rule((0, 0, 0, 0, 0, 0)))
+# [(1, 0, 0, 0, 0, 0)]
