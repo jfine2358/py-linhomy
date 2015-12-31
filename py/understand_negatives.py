@@ -389,7 +389,8 @@ doit_CD(1, 7)[0]
 
 # The following confirms
 # [010000] * [01] = [020000] + [100000]
-# and gives insight into it rectification.
+# and gives insight into it rectification (if required).
+# Work in Dec 2015 suggest that the above line is correct.
 
 # Find the index of the g-indexes.
 i = INDEXES[8].index(b'\x00\x02\x00\x00\x00\x00')
@@ -400,18 +401,35 @@ print(i, j)
 # Convert into a CD vector.
 g_row = [0] * 34
 g_row[6] = g_row[27] = 1
+
+
+from linhomy.fibonacci import FIBONACCI
+def cd_inverse(d, g_row):
+    '''Return C and D factors of g_row, in G basis.
+
+    Parameter d is the dimension of g. We have
+    g_row =  C(c_part) + D(d_part).
+    '''
+    cd_value = list(numpy.dot(CD_from_G[d], g_row))
+
+    fib_d = FIBONACCI[d]        # Two off-by-ones cancel here.
+    # Split into C and D parts.
+    c_cd_part, d_cd_part = cd_value[:fib_d], cd_value[fib_d:]
+
+    # Express the parts using the G basis.
+    c_part = list(numpy.dot(G_from_CD[d-1], c_cd_part))
+    d_part = list(numpy.dot(G_from_CD[d-2], d_cd_part))
+
+    return c_part, d_part
+
+
 cd_value = list(numpy.dot(CD_from_G[8], g_row))
 
 # Split into C and D parts.
-c_cd_part, d_cd_part = cd_value[:21], cd_value[21:]
+c_g_part, d_g_part = cd_inverse(8, g_row)
 
-# Express the parts using the G basis.
-c_g_part = numpy.dot(G_from_CD[7], c_cd_part)
-d_g_part = numpy.dot(G_from_CD[6], d_cd_part)
-
-
-print(list(c_g_part))
-print(list(d_g_part))
+print(c_g_part)
+print(d_g_part)
 # [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 # [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
 
