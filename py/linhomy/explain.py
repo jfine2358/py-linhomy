@@ -1,5 +1,6 @@
 '''Explain product in terms of C and D rules
 
+Usage: $ python3 -m linhomy.explain 0010 0001
 
 '''
 
@@ -110,4 +111,8 @@ if __name__ == '__main__':
 
         print(ind, deg)
 
-    explain('0010', '0000')
+    import sys
+
+    s1, s2 = sys.argv[1:]
+
+    explain(s1, s2)
