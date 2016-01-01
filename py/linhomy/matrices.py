@@ -364,3 +364,18 @@ def CDR_from_CD(self):
     return value
 
 CD_from_CDR = invert_grow_list(CDR_from_CD)
+
+
+@grow_list
+def CDR_from_FLAG(self):
+
+    deg = len(self)
+
+    return numpy.dot(CDR_from_CD[deg], CD_from_FLAG[deg])
+
+
+@grow_list
+def IC_from_CDR(self):
+
+    deg = len(self)
+    return numpy.dot(IC_from_CD[deg], CD_from_CDR[deg])
