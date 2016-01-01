@@ -113,6 +113,7 @@ from .fibonacci import index_from_word
 from .fibonacci import word_from_index
 from .tools import grow_list
 from .data import IC_flag
+from .rank import rank_reduce
 from .rules import C_rule
 from .rules import D_rule
 from .six import iterbytes
@@ -347,3 +348,19 @@ def CD_from_FLAG(self):
     deg = len(self)
 
     return numpy.dot(CD_from_IC[deg], IC_from_FLAG[deg])
+
+
+@grow_list
+def CDR_from_CD(self):
+
+    deg = len(self)
+    value = fib_zeros_array(deg, deg)
+
+    for j, word in enumerate(FIB_WORDS[deg]):
+        for i_word in rank_reduce(word):
+            i = FIB_WORDS[deg].index(i_word)
+            value[i, j] += 1
+
+    return value
+
+CD_from_CDR = invert_grow_list(CDR_from_CD)
