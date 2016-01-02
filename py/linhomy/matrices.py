@@ -379,3 +379,14 @@ def IC_from_CDR(self):
 
     deg = len(self)
     return numpy.dot(IC_from_CD[deg], CD_from_CDR[deg])
+
+
+@grow_list
+def C_in_CDR(self):
+
+    deg = len(self)
+    value = fib_zeros_array(deg + 1, deg)
+
+    tmp = numpy.dot(C_in_CD[deg], CD_from_CDR[deg])
+    value = numpy.dot(CDR_from_CD[deg+1], tmp)
+    return value

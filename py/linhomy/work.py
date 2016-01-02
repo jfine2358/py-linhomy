@@ -57,6 +57,9 @@ array([[[1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1],
 10 5 [(-2, 8), (-1, 29), (0, 5374), (1, 257), (2, 28)]
 
 
+# Product in CDR is very nice - no negatives, many zeros, all entries
+# small.
+
 >>> for n in range(2, 11):
 ...     for m in range(1, n):
 ...         if 2 * m <= n:
@@ -87,6 +90,26 @@ array([[[1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1],
 10 3 [(0, 5472), (1, 129), (2, 5), (3, 1)]
 10 4 [(0, 5639), (1, 139), (2, 6), (3, 1)]
 10 5 [(0, 5542), (1, 144), (2, 10)]
+
+# Cone in CDR has some negatives, otherwise many zeros and the rest
+# ones.
+# Number of negatives is probably Fibonacci numbers - 1 (A000071).
+# Number of ones is probably Lucas numbers (A000032).
+
+>>> for d in range(11):
+...     counter = Counter(C_in_CDR[d].flatten())
+...     print(d, sorted(counter.items()))
+0 [(1, 1)]
+1 [(0, 1), (1, 1)]
+2 [(0, 3), (1, 3)]
+3 [(-1, 1), (0, 10), (1, 4)]
+4 [(-1, 2), (0, 31), (1, 7)]
+5 [(-1, 4), (0, 89), (1, 11)]
+6 [(-1, 7), (0, 248), (1, 18)]
+7 [(-1, 12), (0, 673), (1, 29)]
+8 [(-1, 20), (0, 1803), (1, 47)]
+9 [(-1, 33), (0, 4786), (1, 76)]
+10 [(-1, 54), (0, 12639), (1, 123)]
 '''
 
 from __future__ import absolute_import
@@ -103,6 +126,7 @@ from .matrices import G_from_FLAG
 from .matrices import IC_from_G
 
 from .matrices import CDR_from_FLAG
+from .matrices import C_in_CDR
 from .matrices import IC_from_CDR
 
 from .product import product_formula
