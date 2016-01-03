@@ -289,39 +289,44 @@ def D_in_G(self):
     return value
 
 
-@grow_list
-def G_from_CD(self):
+def AAA_from_CD_factory(C_in_AAA, D_in_AAA):
 
-    # TODO: Is this the correct?
-    # TODO: Tidy this mess.
+    @grow_list
+    def AAA_from_CD(self):
 
-    deg = len(self)
-    value = fib_zeros_array(deg, deg)
-    if deg == 0:
-        value[0, 0] = 1
+        # TODO: Is this the correct?
+        # TODO: Tidy this mess.
+
+        deg = len(self)
+        value = fib_zeros_array(deg, deg)
+        if deg == 0:
+            value[0, 0] = 1
+            return value
+
+        # The columns give the G value of a CD word.
+        words = FIB_WORDS[deg]
+        for j, cd_word in enumerate(words):
+
+            prefix, body = cd_word[:1], cd_word[1:]
+            if prefix == b'\x01':
+                offset = FIB_WORDS[deg-1].index(body)
+                column = numpy.dot(C_in_AAA[deg-1], self[deg -1][:,offset])
+                value[:,j] += column # Why increment rather than assign?
+
+            elif prefix == b'\x02':
+                offset = FIB_WORDS[deg-2].index(body)
+                column = numpy.dot(D_in_AAA[deg-2], self[deg -2][:,offset])
+                value[:,j] += column # Why increment rather than assign?
+
+            else:
+                raise ThisCannotHappen
+
         return value
 
-    # The columns give the G value of a CD word.
-    words = FIB_WORDS[deg]
-    for j, cd_word in enumerate(words):
-
-        prefix, body = cd_word[:1], cd_word[1:]
-        if prefix == b'\x01':
-            offset = FIB_WORDS[deg-1].index(body)
-            column = numpy.dot(C_in_G[deg-1], self[deg -1][:,offset])
-            value[:,j] += column # Why increment rather than assign?
-
-        elif prefix == b'\x02':
-            offset = FIB_WORDS[deg-2].index(body)
-            column = numpy.dot(D_in_G[deg-2], self[deg -2][:,offset])
-            value[:,j] += column # Why increment rather than assign?
-
-        else:
-            raise ThisCannotHappen
+    return AAA_from_CD
 
 
-    return value
-
+G_from_CD = AAA_from_CD_factory(C_in_G, D_in_G)
 CD_from_G = invert_grow_list(G_from_CD)
 
 
