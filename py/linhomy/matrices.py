@@ -435,3 +435,17 @@ def C_in_CDRv2(self):
 
 CDRv2_from_CD = AAA_from_CD_factory(C_in_CDRv2, default_D_in_AAA)
 CD_from_CDRv2 = invert_grow_list(CDRv2_from_CD)
+
+
+@grow_list
+def CDRv2_from_FLAG(self):
+
+    deg = len(self)
+    return numpy.dot(CDRv2_from_CD[deg], CD_from_FLAG[deg])
+
+
+@grow_list
+def IC_from_CDRv2(self):
+
+    deg = len(self)
+    return numpy.dot(IC_from_CD[deg], CD_from_CDRv2[deg])

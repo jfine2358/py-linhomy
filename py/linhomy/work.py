@@ -110,6 +110,56 @@ array([[[1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1],
 8 [(-1, 20), (0, 1803), (1, 47)]
 9 [(-1, 33), (0, 4786), (1, 76)]
 10 [(-1, 54), (0, 12639), (1, 123)]
+
+Now try CDRv2. Get some negatives in the product.  But not bad for
+simplest thing that could possibly work.  All seems good, up to error
+in (6, 3).  Investigate here?
+>>> for n in range(2, 11):
+...     for m in range(1, n):
+...         if 2 * m <= n:
+...             print(n, m, stats_CDRv2(n - m, m))
+2 1 [(1, 2)]
+3 1 [(0, 3), (1, 3)]
+4 1 [(0, 9), (1, 6)]
+4 2 [(0, 14), (1, 6)]
+5 1 [(0, 31), (1, 9)]
+5 2 [(0, 37), (1, 11)]
+6 1 [(0, 88), (1, 16)]
+6 2 [(0, 112), (1, 18)]
+6 3 [(-2, 1), (0, 92), (1, 23), (2, 1)]
+7 1 [(0, 248), (1, 25)]
+7 2 [(0, 305), (1, 31)]
+7 3 [(-2, 3), (0, 272), (1, 38), (2, 2)]
+8 1 [(0, 672), (1, 42)]
+8 2 [(0, 834), (1, 50)]
+8 3 [(-2, 7), (-1, 2), (0, 732), (1, 71), (2, 4)]
+8 4 [(-4, 1), (-2, 8), (-1, 1), (0, 768), (1, 64), (2, 8)]
+9 1 [(0, 1803), (1, 67)]
+9 2 [(0, 2227), (1, 83)]
+9 3 [(-2, 15), (-1, 6), (0, 1997), (1, 119), (2, 7), (3, 1)]
+9 4 [(-4, 2), (-2, 19), (-1, 9), (0, 2031), (1, 122), (2, 17)]
+10 1 [(0, 4785), (1, 110)]
+10 2 [(0, 5918), (1, 134)]
+10 3 [(-2, 30), (-1, 16), (0, 5336), (1, 208), (2, 15), (3, 2)]
+10 4 [(-4, 4), (-2, 45), (-1, 25), (0, 5457), (1, 215), (2, 38), (3, 1)]
+10 5 [(-4, 5), (-2, 46), (-1, 35), (0, 5332), (1, 236), (2, 42)]
+
+# The C rule is still good, however.
+>>> for d in range(11):
+...     counter = Counter(C_in_CDRv2[d].flatten())
+...     print(d, sorted(counter.items()))
+0 [(1, 1)]
+1 [(0, 1), (1, 1)]
+2 [(0, 3), (1, 3)]
+3 [(0, 11), (1, 4)]
+4 [(0, 33), (1, 7)]
+5 [(0, 93), (1, 11)]
+6 [(0, 255), (1, 18)]
+7 [(0, 685), (1, 29)]
+8 [(0, 1823), (1, 47)]
+9 [(0, 4819), (1, 76)]
+10 [(0, 12693), (1, 123)]
+
 '''
 
 from __future__ import absolute_import
@@ -129,11 +179,15 @@ from .matrices import CDR_from_FLAG
 from .matrices import C_in_CDR
 from .matrices import IC_from_CDR
 
+from .matrices import CDRv2_from_FLAG
+from .matrices import C_in_CDRv2
+from .matrices import IC_from_CDRv2
+
 from .product import product_formula
 from .product import change_product_basis
 
 
-
+# Template for copy, paste and edit.
 def doit_G(n, m):
 
     return change_product_basis(
@@ -143,7 +197,6 @@ def doit_G(n, m):
         G_from_FLAG[n+m]
     )
 
-
 def stats(n, m):
 
     matrix = doit_G(n, m)
@@ -151,6 +204,8 @@ def stats(n, m):
     counts = sorted(counter.items())
     return counts
 
+
+# Copy, paste and edit of previous code.
 def doit_CDR(n, m):
 
     return change_product_basis(
@@ -163,6 +218,24 @@ def doit_CDR(n, m):
 def stats_CDR(n, m):
 
     matrix = doit_CDR(n, m)
+    counter = Counter(matrix.flatten())
+    counts = sorted(counter.items())
+    return counts
+
+
+# Copy, paste and edit of previous code.
+def doit_CDRv2(n, m):
+
+    return change_product_basis(
+        product_formula(n, m),
+        IC_from_CDRv2[n],
+        IC_from_CDRv2[m],
+        CDRv2_from_FLAG[n+m]
+    )
+
+def stats_CDRv2(n, m):
+
+    matrix = doit_CDRv2(n, m)
     counter = Counter(matrix.flatten())
     counts = sorted(counter.items())
     return counts
