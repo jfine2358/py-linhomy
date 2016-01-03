@@ -395,3 +395,43 @@ def C_in_CDR(self):
     tmp = numpy.dot(C_in_CD[deg], CD_from_CDR[deg])
     value = numpy.dot(CDR_from_CD[deg+1], tmp)
     return value
+
+
+@grow_list
+def default_D_in_AAA(self):
+    '''Ones along diagonal in bottom square.
+    '''
+    deg = len(self)
+    value = fib_zeros_array(deg + 2, deg)
+
+
+    for j in range(FIBONACCI[deg + 1]):
+
+        i = j + FIBONACCI[deg + 2]
+        value[i, j] += 1
+
+    return value
+
+
+@grow_list
+def C_in_CDRv2(self):
+    '''Fix negatives in C_in_CDR by replacing by zero.
+
+    This is the simplest possible was to fix these negatives.
+    '''
+    deg = len(self)
+    value = fib_zeros_array(deg + 1, deg)
+    source = C_in_CDR[deg]
+
+    for i in range(value.shape[0]):
+        for j in range(value.shape[1]):
+
+            coeff = source[i, j]
+            trunc_coeff = max(0, coeff)
+            value[i, j] = trunc_coeff
+
+    return value
+
+
+CDRv2_from_CD = AAA_from_CD_factory(C_in_CDRv2, default_D_in_AAA)
+CD_from_CDRv2 = invert_grow_list(CDRv2_from_CD)
