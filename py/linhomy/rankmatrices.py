@@ -65,6 +65,16 @@ identity_matrices = RankMatrices(identity_rule)
 8 [(0, 2992), (1, 34)]
 9 [(0, 7865), (1, 55)]
 10 [(0, 20648), (1, 89)]
+
+
+>>> for n in range(10):
+...    for word in FIB_WORDS[n]:
+...        index = index_from_word(word)
+...        word2 = word_from_index(index)
+...        if word != word2:
+...            print(word, word2)
+
+
 '''
 
 from __future__ import absolute_import
@@ -199,6 +209,34 @@ class RankMatrices:
 
 
 identity_matrices = RankMatrices(identity_rule)
+
+
+def index_from_word(word):
+    '''Here, indexes is pair of tuples, not tuple of pairs.
+    '''
+    # Split into parts.
+    parts = word.split(b'\x01\x02')
+
+    # Turn parts into pair of sequences of ints.
+    C_count = tuple(item.count(b'\x01') for item in parts)
+    D_count = tuple(item.count(b'\x02') for item in parts)
+
+    index = C_count, D_count
+
+    return index
+
+
+def word_from_index(index):
+
+    # Turn int into sequence of parts.
+    C_count, D_count = index
+    parts = tuple(
+        b'\x02' * d + b'\x01' * c
+        for (c, d) in zip(C_count, D_count)
+    )
+
+    # Join the parts.
+    return b'\x01\x02'.join(parts)
 
 
 if __name__ == '__main__':
