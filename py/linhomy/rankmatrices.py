@@ -94,6 +94,7 @@ __metaclass__ = type
 
 
 from collections import Counter
+import itertools
 import numpy
 from .fibonacci import FIB_WORDS
 from .matrices import fib_zeros_array
@@ -256,6 +257,13 @@ def expand_d(self):
     return tuple(
         b'\x02' * (d - i) + b'\x01' * (2 * i)
         for i in range(d + 1)
+    )
+
+def expand_d_product(ints):
+
+    # TODO: Provide test.
+    return itertools.product(
+        *(expand_d[d] for d in ints)
     )
 
 
