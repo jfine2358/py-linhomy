@@ -75,6 +75,15 @@ identity_matrices = RankMatrices(identity_rule)
 ...            print(word, word2)
 
 
+>>> expand_d[0] == (b'',)
+True
+>>> expand_d[1] == (b'\x02', b'\x01\x01')
+True
+>>> expand_d[2] == (b'\x02\x02', b'\x02\x01\x01', b'\x01' * 4)
+True
+>>> expand_d[3] == (b'\x02\x02\x02', b'\x02\x02\x01\x01',
+... b'\x02' + b'\x01' * 4,  b'\x01' * 6)
+True
 '''
 
 from __future__ import absolute_import
@@ -237,6 +246,17 @@ def word_from_index(index):
 
     # Join the parts.
     return b'\x01\x02'.join(parts)
+
+
+@grow_list
+def expand_d(self):
+    '''Return tuple of word generated from D * d.
+    '''
+    d = len(self)
+    return tuple(
+        b'\x02' * (d - i) + b'\x01' * (2 * i)
+        for i in range(d + 1)
+    )
 
 
 if __name__ == '__main__':
