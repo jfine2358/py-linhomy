@@ -84,6 +84,16 @@ True
 >>> expand_d[3] == (b'\x02\x02\x02', b'\x02\x02\x01\x01',
 ... b'\x02' + b'\x01' * 4,  b'\x01' * 6)
 True
+
+>>> expand_c((0, 0, 1))
+((0, 0, 1), (0, 1, 0), (1, 0, 0))
+
+>>> expand_c((0, 0, 2))
+((0, 0, 2), (0, 1, 1), (0, 2, 0), (1, 0, 1), (1, 1, 0), (2, 0, 0))
+
+>>> expand_c((0, 1, 1))
+((0, 1, 1), (0, 2, 0), (1, 0, 1), (1, 1, 0), (2, 0, 0))
+
 '''
 
 from __future__ import absolute_import
@@ -94,6 +104,7 @@ __metaclass__ = type
 
 
 from collections import Counter
+import functools
 import itertools
 import numpy
 from .fibonacci import FIB_WORDS
@@ -265,6 +276,25 @@ def expand_d_product(ints):
     return itertools.product(
         *(expand_d[d] for d in ints)
     )
+
+
+def expand_c(ints):
+    '''Return tuple of ints.
+    '''
+    if len(ints) <= 1:
+        return (ints,)
+
+    head = ints[:-1]
+    tail = ints[-1]
+
+    return tuple(sorted(
+        # Create new tuple with possible decremented tail.
+        tuple(item + (tail - i,))
+        # Iterate over the possible decrements.
+        for i in range(tail + 1)
+        # For given decrement, recursively iterate over items.
+        for item in expand_c(head[:-1] + (head[-1] + i,))
+    ))
 
 
 if __name__ == '__main__':
