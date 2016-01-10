@@ -85,15 +85,17 @@ True
 ... b'\x02' + b'\x01' * 4,  b'\x01' * 6)
 True
 
->>> expand_c((0, 0, 1))
+>>> expand_c((1, 0, 0))
 ((0, 0, 1), (0, 1, 0), (1, 0, 0))
 
->>> expand_c((0, 0, 2))
+>>> expand_c((0, 0, 1))
+((0, 0, 1),)
+
+>>> expand_c((2, 0, 0))
 ((0, 0, 2), (0, 1, 1), (0, 2, 0), (1, 0, 1), (1, 1, 0), (2, 0, 0))
 
->>> expand_c((0, 1, 1))
-((0, 1, 1), (0, 2, 0), (1, 0, 1), (1, 1, 0), (2, 0, 0))
-
+>>> expand_c((1, 1, 0))
+((0, 0, 2), (0, 1, 1), (0, 2, 0), (1, 0, 1), (1, 1, 0))
 '''
 
 from __future__ import absolute_import
@@ -280,20 +282,23 @@ def expand_d_product(ints):
 
 def expand_c(ints):
     '''Return tuple of ints.
+
+    Move C rightwards.  For example, CCCD contributes also to CCDC and
+    CDCC.
     '''
     if len(ints) <= 1:
         return (ints,)
 
-    head = ints[:-1]
-    tail = ints[-1]
+    head = ints[0]
+    body = ints[1:]
 
     return tuple(sorted(
         # Create new tuple with possible decremented tail.
-        tuple(item + (tail - i,))
+        tuple((head - i,) + item)
         # Iterate over the possible decrements.
-        for i in range(tail + 1)
+        for i in range(head + 1)
         # For given decrement, recursively iterate over items.
-        for item in expand_c(head[:-1] + (head[-1] + i,))
+        for item in expand_c((body[0] + i,) + body[1:])
     ))
 
 
