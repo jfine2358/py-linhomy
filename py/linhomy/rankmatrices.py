@@ -75,15 +75,30 @@ identity_matrices = RankMatrices(identity_rule)
 ...            print(word, word2)
 
 
->>> expand_d[0] == (b'',)
+>>> EXPAND_D[0] == (b'',)
 True
->>> expand_d[1] == (b'\x02', b'\x01\x01')
+>>> EXPAND_D[1] == (b'\x02', b'\x01\x01')
 True
->>> expand_d[2] == (b'\x02\x02', b'\x02\x01\x01', b'\x01' * 4)
+>>> EXPAND_D[2] == (b'\x02\x02', b'\x02\x01\x01', b'\x01' * 4)
 True
->>> expand_d[3] == (b'\x02\x02\x02', b'\x02\x02\x01\x01',
+>>> EXPAND_D[3] == (b'\x02\x02\x02', b'\x02\x02\x01\x01',
 ... b'\x02' + b'\x01' * 4,  b'\x01' * 6)
 True
+
+>>> list(expand_d((0,))) == [(b'',)]
+True
+
+>>> str_expand_d(expand_d((0,)))
+''
+
+>>> str_expand_d(expand_d((1,)))
+''
+
+>>> str_expand_d(expand_d((0, 1, 2)))
+',2,22 ,2,211 ,2,1111 ,11,22 ,11,211 ,11,1111'
+
+>>> str_expand_d(expand_d((0, 2, 1)))
+',22,2 ,22,11 ,211,2 ,211,11 ,1111,2 ,1111,11'
 
 >>> expand_c((1, 0, 0))
 ((0, 0, 1), (0, 1, 0), (1, 0, 0))
@@ -119,11 +134,23 @@ from .matrices import D_in_CD
 from .matrices import IC_from_CDR
 from .product import product_formula
 from .product import change_product_basis
+from .six import iterbytes
 from .tools import grow_list
 
 def identity_rule(word):
     yield word
 
+
+def str_expand_d(items):
+    return str(' ').join(
+        str(',').join(
+            str('').join(
+                str(c) for c in iterbytes(word)
+            )
+            for word in item
+        )
+        for item in items
+    )
 
 def _AAA_from_CDR(rule, deg):
 
@@ -263,7 +290,7 @@ def word_from_index(index):
 
 
 @grow_list
-def expand_d(self):
+def EXPAND_D(self):
     '''Return tuple of word generated from D * d.
     '''
     d = len(self)
@@ -272,15 +299,20 @@ def expand_d(self):
         for i in range(d + 1)
     )
 
-def expand_d_product(ints):
+def expand_d(ints):
+    '''Yield results of applying D -> CC rule.
 
-    # TODO: Provide test.
-    return itertools.product(
-        *(expand_d[d] for d in ints)
-    )
+    Does not apply to the leading D's.
+    '''
+    head = ((b'',),)            # Skip leading D's.
+    body = tuple(EXPAND_D[d] for d in ints[1:])
+
+    # Return iterator over the product.
+    return itertools.product(*(head + body))
 
 
 def expand_c(ints):
+
     '''Return tuple of ints.
 
     Move C rightwards.  For example, CCCD contributes also to CCDC and
