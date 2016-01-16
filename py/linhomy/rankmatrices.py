@@ -148,8 +148,6 @@ True
 >>> slide_d(((1, 0), (2, 0)))
 (((1, 0), (2, 0)), ((2, 1), (1, 0)), ((3, 2), (0, 0)))
 
-
->>> cm_1 = RankMatrices(candidate_rule_1)
 >>> cm_1.print_C_stats(10)
 0 [(1, 1)]
 1 [(0, 1), (1, 1)]
@@ -213,6 +211,44 @@ This shows that candidate_rule_1 is wrong - transposition.
 3 CCC CCC
 3 CD DC
 3 DC CD
+
+Revised rule is still wrong!
+>>> cm_2.print_product_stats(6)
+2 1 [(1, 2)]
+3 1 [(0, 3), (1, 3)]
+4 1 [(0, 9), (1, 6)]
+4 2 [(0, 14), (1, 6)]
+5 1 [(0, 29), (1, 11)]
+5 2 [(0, 35), (1, 13)]
+6 1 [(-1, 2), (0, 84), (1, 18)]
+6 2 [(0, 106), (1, 24)]
+6 3 [(0, 86), (1, 30), (2, 1)]
+
+
+The candidate_rule_2 should not here have CDCC.
+    5 DCD CCDC CDCC DCD
+There may be other errors.
+>>> for d in range(1, 6):
+...     print_rule(candidate_rule_2, d)
+1 C C
+2 CC CC
+2 D D
+3 CCC CCC
+3 CD CD
+3 DC DC
+4 CCCC CCCC
+4 CCD CCD CDC
+4 CDC CDC
+4 DCC DCC
+4 DD DD
+5 CCCCC CCCCC
+5 CCCD CCCD CCDC CDCC
+5 CCDC CCDC CDCC
+5 CDCC CDCC
+5 CDD CDCC CDD
+5 DCCC DCCC
+5 DCD CCDC CDCC DCD
+5 DDC DDC
 '''
 
 from __future__ import absolute_import
@@ -501,10 +537,36 @@ def candidate_rule_1(word):
                 bbb
             )
 
+            # Oops - should be CD, not DC.
             yield b'\x02\x01'.join(
-                ggg + hhh
+                ggg + hhh       # Oops - transposed.
                 for (ggg, hhh) in ccc
             )
+cm_1 = RankMatrices(candidate_rule_1)
+
+def candidate_rule_2(word):
+    '''Rough first approximation, tests how things fit together.
+    '''
+    index = index_from_word(word)
+    for C_count, D_count in slide_d(index):
+
+        new_Cs = tuple(expand_c(C_count))
+        new_Ds = tuple(expand_d(D_count))
+
+        for mixed in itertools.product(new_Cs, new_Ds):
+
+            aaa, bbb = mixed
+            ccc = zip(
+                (b'\x01' * c for c in aaa),
+                bbb
+            )
+
+            yield b'\x01\x02'.join(
+                hhh + ggg
+                for (ggg, hhh) in ccc
+            )
+cm_2 = RankMatrices(candidate_rule_2)
+
 
 def CD_from_word(word):
 
