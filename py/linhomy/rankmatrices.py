@@ -56,6 +56,21 @@ identity_matrices = RankMatrices(identity_rule)
 10 [(0, 20648), (1, 89)]
 
 
+>>> for d in range(1, 7):
+...    print(' '.join(map(CD_from_word, FIB_WORDS[d])))
+C
+CC D
+CCC CD DC
+CCCC CCD CDC DCC DD
+CCCCC CCCD CCDC CDCC CDD DCCC DCD DDC
+CCCCCC CCCCD CCCDC CCDCC CCDD CDCCC CDCD CDDC DCCCC DCCD DCDC DDCC DDD
+
+>>> for d in range(1, 7):
+...    for word in FIB_WORDS[d]:
+...        if word != word_from_CD(CD_from_word(word)):
+...            print(word, CD_from_word(word))
+
+
 >>> for n in range(10):
 ...    for word in FIB_WORDS[n]:
 ...        index = index_from_word(word)
@@ -479,6 +494,23 @@ def candidate_rule_1(word):
                 ggg + hhh
                 for (ggg, hhh) in ccc
             )
+
+def CD_from_word(word):
+
+    d = {
+        1: str('C'),
+        2: str('D'),
+    }
+    return str('').join(d[c] for c in iterbytes(word))
+
+
+def word_from_CD(s):
+
+    d = {
+        str('C'): b'\x01',
+        str('D'): b'\x02',
+    }
+    return b''.join(d[c] for c in s)
 
 
 if __name__ == '__main__':
