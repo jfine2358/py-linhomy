@@ -81,13 +81,22 @@ True
 ''
 
 >>> str_expand_d(expand_d((1,)))
-''
+'2'
+
+>>> str_expand_d(expand_d((2,)))
+'22'
 
 >>> str_expand_d(expand_d((0, 1, 2)))
 ',2,22 ,2,211 ,2,1111 ,11,22 ,11,211 ,11,1111'
 
 >>> str_expand_d(expand_d((0, 2, 1)))
 ',22,2 ,22,11 ,211,2 ,211,11 ,1111,2 ,1111,11'
+
+>>> str_expand_d(expand_d((1, 2, 1)))
+'2,22,2 2,22,11 2,211,2 2,211,11 2,1111,2 2,1111,11'
+
+>>> str_expand_d(expand_d((2, 2, 1)))
+'22,22,2 22,22,11 22,211,2 22,211,11 22,1111,2 22,1111,11'
 
 >>> expand_c((1, 0, 0))
 ((0, 0, 1), (0, 1, 0), (1, 0, 0))
@@ -340,7 +349,7 @@ def expand_d(ints):
 
     Does not apply to the leading D's.
     '''
-    head = ((b'',),)            # Skip leading D's.
+    head = ((b'\x02' * ints[0],),) # The leading D's.
     body = tuple(EXPAND_D[d] for d in ints[1:])
 
     # Return iterator over the product.
