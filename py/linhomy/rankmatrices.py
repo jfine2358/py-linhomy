@@ -202,6 +202,17 @@ True
 10 3 [(-2, 4), (-1, 67), (0, 5127), (1, 396), (2, 11), (3, 2)]
 10 4 [(-2, 7), (-1, 44), (0, 5226), (1, 471), (2, 35), (3, 2)]
 10 5 [(-2, 27), (-1, 98), (0, 5078), (1, 438), (2, 55)]
+
+
+This shows that candidate_rule_1 is wrong - transposition.
+>>> for d in range(1, 4):
+...     print_rule(candidate_rule_1, d)
+1 C C
+2 CC CC
+2 D D
+3 CCC CCC
+3 CD DC
+3 DC CD
 '''
 
 from __future__ import absolute_import
@@ -511,6 +522,14 @@ def word_from_CD(s):
         str('D'): b'\x02',
     }
     return b''.join(d[c] for c in s)
+
+
+def print_rule(rule, d):
+
+    for word in FIB_WORDS[d]:
+        src = CD_from_word(word)
+        bits = sorted(map(CD_from_word, rule(word)))
+        print(d, src, str(' ').join(bits))
 
 
 if __name__ == '__main__':
