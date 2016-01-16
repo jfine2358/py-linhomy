@@ -111,6 +111,29 @@ True
 
 >>> expand_c((1, 1, 0))
 ((0, 0, 2), (0, 1, 1), (0, 2, 0), (1, 0, 1), (1, 1, 0))
+
+
+>>> slide_d(((0,), (0,)))
+(((0,), (0,)),)
+>>> slide_d(((0,), (1,)))
+(((0,), (1,)),)
+>>> slide_d(((1,), (0,)))
+(((1,), (0,)),)
+>>> slide_d(((1,), (1,)))
+(((1,), (1,)),)
+
+
+>>> slide_d(((0, 0), (0, 0)))
+(((0, 0), (0, 0)),)
+>>> slide_d(((0, 0), (1, 0)))
+(((0, 0), (1, 0)), ((1, 1), (0, 0)))
+>>> slide_d(((0, 0), (2, 0)))
+(((0, 0), (2, 0)), ((1, 1), (1, 0)), ((2, 2), (0, 0)))
+
+>>> slide_d(((1, 0), (1, 0)))
+(((1, 0), (1, 0)), ((2, 1), (0, 0)))
+>>> slide_d(((1, 0), (2, 0)))
+(((1, 0), (2, 0)), ((2, 1), (1, 0)), ((3, 2), (0, 0)))
 '''
 
 from __future__ import absolute_import
@@ -332,6 +355,31 @@ def expand_c(ints):
         # For given decrement, recursively iterate over items.
         for item in expand_c((body[0] + i,) + body[1:])
     ))
+
+
+def slide_d(index):
+    '''Return indexes to obtained by d-sliding index.
+
+    An index is C_count, D_count.
+    '''
+
+    C_count, D_count = index
+    # First deal with special case - no change.
+    if len(C_count) < 2:
+        return (index,)
+
+    # Split the data with have.
+    (c_1, c_2), C_body = C_count[:2], C_count[2:]
+    (d_1,), D_body = D_count[:1], D_count[1:]
+
+    return tuple(sorted(
+        (
+            (c_1 + i, c_2 + i) + C_body,
+            (d_1 - i,) + D_body
+        )
+        for i in range(d_1 + 1)
+    ))
+
 
 
 if __name__ == '__main__':
