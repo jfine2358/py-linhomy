@@ -1,10 +1,8 @@
 '''Explore matrices that respect rank
 
 identity_matrices = RankMatrices(identity_rule)
->>> for n in range(2, 11):
-...     for m in range(1, n):
-...         if 2 * m <= n:
-...             print(n, m, identity_matrices.product_stats(n - m, m))
+
+>>> identity_matrices.print_product_stats(10)
 2 1 [(1, 2)]
 3 1 [(0, 3), (1, 3)]
 4 1 [(0, 10), (1, 5)]
@@ -31,12 +29,7 @@ identity_matrices = RankMatrices(identity_rule)
 10 4 [(0, 5639), (1, 139), (2, 6), (3, 1)]
 10 5 [(0, 5542), (1, 144), (2, 10)]
 
-
->>> C_in_AAA = identity_matrices.C_rule
-
->>> for d in range(11):
-...     counter = Counter(C_in_AAA[d].flatten())
-...     print(d, sorted(counter.items()))
+>>> identity_matrices.print_C_stats(10)
 0 [(1, 1)]
 1 [(0, 1), (1, 1)]
 2 [(0, 3), (1, 3)]
@@ -49,11 +42,7 @@ identity_matrices = RankMatrices(identity_rule)
 9 [(-1, 33), (0, 4786), (1, 76)]
 10 [(-1, 54), (0, 12639), (1, 123)]
 
->>> D_in_AAA = identity_matrices.D_rule
-
->>> for d in range(11):
-...     counter = Counter(D_in_AAA[d].flatten())
-...     print(d, sorted(counter.items()))
+>>> identity_matrices.print_D_stats(10)
 0 [(0, 1), (1, 1)]
 1 [(0, 2), (1, 1)]
 2 [(0, 8), (1, 2)]
@@ -268,17 +257,41 @@ class RankMatrices:
             self.AAA_from_CD
         )
 
-        self.doit = lambda n, m: change_product_basis(
+
+    def doit(self, n, m):
+        return change_product_basis(
             product_formula(n, m),
             self.IC_from_AAA[n],
             self.IC_from_AAA[m],
             self.AAA_from_FLAG[n+m]
         )
 
-        self.product_stats = lambda n, m: sorted(
-            Counter(self.doit(n, m).flatten()).items()
-        )
 
+    def product_stats(self, n, m):
+        matrix = self.doit(n, m)
+        counter = Counter(matrix.flatten())
+        return sorted(counter.items())
+
+
+    def print_product_stats(self, max):
+        for n in range(2, max + 1):
+            for m in range(1, n):
+                if 2 * m <= n:
+                    print(n, m, self.product_stats(n - m, m))
+
+
+    def print_C_stats(self, max):
+        C_rule = self.C_rule
+        for d in range(max + 1):
+            counter = Counter(C_rule[d].flatten())
+            print(d, sorted(counter.items()))
+
+
+    def print_D_stats(self, max):
+        D_rule = self.D_rule
+        for d in range(max + 1):
+            counter = Counter(D_rule[d].flatten())
+            print(d, sorted(counter.items()))
 
 
 identity_matrices = RankMatrices(identity_rule)
