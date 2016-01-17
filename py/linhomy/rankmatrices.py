@@ -544,27 +544,35 @@ def candidate_rule_1(word):
             )
 cm_1 = RankMatrices(candidate_rule_1)
 
-def candidate_rule_2(word):
-    '''Rough first approximation, tests how things fit together.
-    '''
-    index = index_from_word(word)
-    for C_count, D_count in slide_d(index):
+def candidate_rule_factory(condition):
 
-        new_Cs = tuple(expand_c(C_count))
-        new_Ds = tuple(expand_d(D_count))
+    def candidate_rule(word):
+        '''Generic rule.'''
+        index = index_from_word(word)
+        for C_count, D_count in slide_d(index):
 
-        for mixed in itertools.product(new_Cs, new_Ds):
+            new_Cs = tuple(expand_c(C_count))
+            new_Ds = tuple(expand_d(D_count))
 
-            aaa, bbb = mixed
-            ccc = zip(
-                (b'\x01' * c for c in aaa),
-                bbb
-            )
+            for mixed in itertools.product(new_Cs, new_Ds):
 
-            yield b'\x01\x02'.join(
-                hhh + ggg
-                for (ggg, hhh) in ccc
-            )
+                aaa, bbb = mixed
+                ccc = zip(
+                    (b'\x01' * c for c in aaa),
+                    bbb
+                )
+
+                value = b'\x01\x02'.join(
+                    hhh + ggg
+                    for (ggg, hhh) in ccc
+                )
+
+                if condition(word, value):
+                    yield value
+
+    return candidate_rule
+
+candidate_rule_2 = candidate_rule_factory(lambda *argv: True)
 cm_2 = RankMatrices(candidate_rule_2)
 
 
