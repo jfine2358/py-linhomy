@@ -212,8 +212,36 @@ This shows that candidate_rule_1 is wrong - transposition.
 3 CD DC
 3 DC CD
 
-Revised rule is still wrong!
->>> cm_2.print_product_stats(6)
+Revise to create cm_2.  Revised rule is still wrong!  First error is
+product (6, 1).
+
+>>> cm_2.print_C_stats(10)
+0 [(1, 1)]
+1 [(0, 1), (1, 1)]
+2 [(0, 3), (1, 3)]
+3 [(0, 11), (1, 4)]
+4 [(0, 32), (1, 8)]
+5 [(0, 90), (1, 14)]
+6 [(0, 250), (1, 23)]
+7 [(-1, 2), (0, 674), (1, 38)]
+8 [(-1, 3), (0, 1801), (1, 66)]
+9 [(-1, 10), (0, 4780), (1, 105)]
+10 [(-1, 19), (0, 12616), (1, 181)]
+
+>>> cm_2.print_D_stats(10)
+0 [(0, 1), (1, 1)]
+1 [(0, 2), (1, 1)]
+2 [(0, 8), (1, 2)]
+3 [(0, 19), (1, 5)]
+4 [(0, 57), (1, 8)]
+5 [(0, 154), (1, 14)]
+6 [(0, 416), (1, 26)]
+7 [(0, 1113), (1, 42)]
+8 [(0, 2950), (1, 76)]
+9 [(0, 7794), (1, 126)]
+10 [(0, 20521), (1, 216)]
+
+>>> cm_2.print_product_stats(10)
 2 1 [(1, 2)]
 3 1 [(0, 3), (1, 3)]
 4 1 [(0, 9), (1, 6)]
@@ -223,6 +251,22 @@ Revised rule is still wrong!
 6 1 [(-1, 2), (0, 84), (1, 18)]
 6 2 [(0, 106), (1, 24)]
 6 3 [(0, 86), (1, 30), (2, 1)]
+7 1 [(-1, 2), (0, 237), (1, 34)]
+7 2 [(-1, 3), (0, 289), (1, 44)]
+7 3 [(0, 251), (1, 62), (2, 2)]
+8 1 [(-1, 9), (0, 649), (1, 56)]
+8 2 [(-1, 3), (0, 803), (1, 78)]
+8 3 [(-1, 11), (0, 689), (1, 112), (2, 4)]
+8 4 [(0, 721), (1, 119), (2, 10)]
+9 1 [(-1, 16), (0, 1754), (1, 100)]
+9 2 [(-1, 13), (0, 2157), (1, 140)]
+9 3 [(-1, 15), (0, 1897), (1, 226), (2, 6), (3, 1)]
+9 4 [(-2, 6), (-1, 24), (0, 1923), (1, 231), (2, 16)]
+10 1 [(-1, 34), (0, 4687), (1, 174)]
+10 2 [(-1, 25), (0, 5779), (1, 248)]
+10 3 [(-1, 53), (0, 5147), (1, 394), (2, 11), (3, 2)]
+10 4 [(-2, 7), (-1, 40), (0, 5234), (1, 467), (2, 35), (3, 2)]
+10 5 [(-2, 25), (-1, 95), (0, 5090), (1, 431), (2, 55)]
 
 
 The candidate_rule_2 should not here have CDCC.
@@ -249,6 +293,110 @@ There may be other errors.
 5 DCCC DCCC
 5 DCD CCDC CDCC DCD
 5 DDC DDC
+
+Create candidate_rule_3.  It has fewer negatives. First error is C
+rule at d=7.
+
+>>> cm_3.print_C_stats(10)
+0 [(1, 1)]
+1 [(0, 1), (1, 1)]
+2 [(0, 3), (1, 3)]
+3 [(0, 11), (1, 4)]
+4 [(0, 32), (1, 8)]
+5 [(0, 90), (1, 14)]
+6 [(0, 250), (1, 23)]
+7 [(-1, 1), (0, 673), (1, 40)]
+8 [(-1, 2), (0, 1801), (1, 67)]
+9 [(-1, 6), (0, 4778), (1, 111)]
+10 [(-1, 12), (0, 12613), (1, 191)]
+
+>>> cm_3.print_D_stats(10)
+0 [(0, 1), (1, 1)]
+1 [(0, 2), (1, 1)]
+2 [(0, 8), (1, 2)]
+3 [(0, 20), (1, 4)]
+4 [(0, 58), (1, 7)]
+5 [(0, 156), (1, 12)]
+6 [(0, 421), (1, 21)]
+7 [(0, 1120), (1, 35)]
+8 [(0, 2966), (1, 60)]
+9 [(0, 7820), (1, 100)]
+10 [(0, 20569), (1, 168)]
+
+>>> cm_3.print_product_stats(10)
+2 1 [(1, 2)]
+3 1 [(0, 3), (1, 3)]
+4 1 [(0, 9), (1, 6)]
+4 2 [(0, 14), (1, 6)]
+5 1 [(0, 30), (1, 10)]
+5 2 [(0, 36), (1, 12)]
+6 1 [(0, 87), (1, 17)]
+6 2 [(0, 108), (1, 22)]
+6 3 [(0, 88), (1, 28), (2, 1)]
+7 1 [(0, 244), (1, 29)]
+7 2 [(0, 298), (1, 38)]
+7 3 [(0, 260), (1, 53), (2, 2)]
+8 1 [(0, 666), (1, 48)]
+8 2 [(0, 816), (1, 68)]
+8 3 [(-1, 3), (0, 711), (1, 98), (2, 4)]
+8 4 [(0, 742), (1, 101), (2, 7)]
+9 1 [(0, 1789), (1, 81)]
+9 2 [(0, 2195), (1, 115)]
+9 3 [(-1, 7), (0, 1946), (1, 185), (2, 6), (3, 1)]
+9 4 [(-2, 1), (-1, 8), (0, 1987), (1, 191), (2, 13)]
+10 1 [(0, 4761), (1, 134)]
+10 2 [(0, 5852), (1, 200)]
+10 3 [(-1, 21), (0, 5247), (1, 326), (2, 11), (3, 2)]
+10 4 [(-2, 2), (-1, 22), (0, 5361), (1, 375), (2, 23), (3, 2)]
+10 5 [(-2, 7), (-1, 37), (0, 5258), (1, 361), (2, 33)]
+
+>>> print_rule(candidate_rule_3, 5)
+5 CCCCC CCCCC
+5 CCCD CCCD CCDC CDCC
+5 CCDC CCDC CDCC
+5 CDCC CDCC
+5 CDD CDCC CDD
+5 DCCC DCCC
+5 DCD CCDC DCD
+5 DDC DDC
+
+>>> print_rule(candidate_rule_3, 6)
+6 CCCCCC CCCCCC
+6 CCCCD CCCCD CCCDC CCDCC CDCCC
+6 CCCDC CCCDC CCDCC CDCCC
+6 CCDCC CCDCC CDCCC
+6 CCDD CCDCC CCDD CDCCC CDDC
+6 CDCCC CDCCC
+6 CDCD CDCD
+6 CDDC CDCCC CDDC
+6 DCCCC DCCCC
+6 DCCD CCCDC CCDCC DCCD DCDC
+6 DCDC CCDCC DCDC
+6 DDCC DDCC
+6 DDD DDD
+
+>>> print_rule(candidate_rule_3, 7)
+7 CCCCCCC CCCCCCC
+7 CCCCCD CCCCCD CCCCDC CCCDCC CCDCCC CDCCCC
+7 CCCCDC CCCCDC CCCDCC CCDCCC CDCCCC
+7 CCCDCC CCCDCC CCDCCC CDCCCC
+7 CCCDD CCCDCC CCCDD CCDCCC CCDDC CDCCCC CDDCC
+7 CCDCCC CCDCCC CDCCCC
+7 CCDCD CCDCD CDCCD CDCDC
+7 CCDDC CCDCCC CCDDC CDCCCC CDDCC
+7 CDCCCC CDCCCC
+7 CDCCD CDCCD CDCDC
+7 CDCDC CDCDC
+7 CDDCC CDCCCC CDDCC
+7 CDDD CDCCCC CDDCC CDDD
+7 DCCCCC DCCCCC
+7 DCCCD CCCCDC CCCDCC CCDCCC DCCCD DCCDC DCDCC
+7 DCCDC CCCDCC CCDCCC DCCDC DCDCC
+7 DCDCC CCDCCC DCDCC
+7 DCDD CCDCCC CCDDC DCDCC DCDD
+7 DDCCC DDCCC
+7 DDCD CCCDCC DCCDC DDCD
+7 DDDC DDDC
 '''
 
 from __future__ import absolute_import
@@ -574,6 +722,19 @@ def candidate_rule_factory(condition):
 
 candidate_rule_2 = candidate_rule_factory(lambda *argv: True)
 cm_2 = RankMatrices(candidate_rule_2)
+
+
+def condition_3(src, value):
+
+    src_head = src.split(b'\x01\x02', 1)[0]
+    val_head = value.split(b'\x01\x02', 1)[0]
+
+    d_diff = src_head.count(b'\x02') - val_head.count(b'\x02')
+    c_count = val_head.count(b'\x01')
+    return c_count >= d_diff
+
+candidate_rule_3 = candidate_rule_factory(condition_3)
+cm_3 = RankMatrices(candidate_rule_3)
 
 
 def CD_from_word(word):
