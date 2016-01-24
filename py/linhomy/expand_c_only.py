@@ -1,4 +1,54 @@
-'''
+'''Slide C, but nothing else
+
+Removes the negatives in the C_stats, keeps D_stats the same, and
+introduces some negatives in product_stats.  Altogether an
+improvement.
+
+I think the changes made here are forced by reasonable assumptions.
+
+Next task is to resolve
+
+8 4 [(-2, 1), (-1, 1), (0, 778), (1, 64), (2, 6)]
+
+>>> list(matrices.doit(4, 4)[1,1])
+[0, 0, 0, 0, 0, 0, 2, 1, 0, 0, -2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0]
+
+>>> list(matrices.doit(4, 4)[1,1]).index(-2)
+10
+
+>>> print_word(matrices.doit(4, 4)[1,1], 8)
+2 CCCDCD
+1 CCCDDC
+-2 CCDCDC
+-1 CCDDCC
+2 DCDCD
+1 DCDDC
+
+>>> ' '.join(map(CD_from_word, FIB_WORDS[4]))
+'CCCC CCD CDC DCC DD'
+
+>>> CD_from_word(FIB_WORDS[4][1])
+'CCD'
+>>> CD_from_word(FIB_WORDS[4][2])
+'CDC'
+
+
+>>> from linhomy.rankmatrices import identity_matrices
+>>> print_word(identity_matrices.doit(4,4)[1, 1], 8)
+2 CCCDCD
+1 CCCDDC
+2 DCDCD
+1 DCDDC
+
+>>> print_word(identity_matrices.doit(4,4)[1, 2], 8)
+1 CCDCCD
+1 CCDCDC
+1 CCDDCC
+
+>>> print_word(identity_matrices.doit(4,4)[2, 2], 8)
+2 CDCCDC
+1 CDDCCC
+
 >>> matrices.print_C_stats(10)
 0 [(1, 1)]
 1 [(0, 1), (1, 1)]
@@ -51,10 +101,12 @@
 10 3 [(0, 5374), (1, 220), (2, 11), (3, 2)]
 10 4 [(-2, 4), (-1, 10), (0, 5519), (1, 228), (2, 22), (3, 2)]
 10 5 [(-2, 6), (-1, 7), (0, 5419), (1, 236), (2, 28)]
+
 '''
 
 import itertools
 
+from .fibonacci import FIB_WORDS
 from .rankmatrices import RankMatrices
 from .rankmatrices import candidate_rule_factory
 from .rankmatrices import print_rule
@@ -64,6 +116,13 @@ from .rankmatrices import index_from_word
 from .rankmatrices import slide_d
 from .rankmatrices import expand_c
 from .rankmatrices import expand_d
+from .rankmatrices import CD_from_word
+
+
+def print_word(v, d):
+    for coeff, word in zip(v, FIB_WORDS[d]):
+        if coeff:
+            print(coeff, CD_from_word(word))
 
 
 def expand_c_only(word):
