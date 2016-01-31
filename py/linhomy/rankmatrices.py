@@ -487,12 +487,21 @@ def D_in_AAA_factory(CD_from_AAA, AAA_from_CD):
 
 class RankMatrices:
 
-    def __init__(self, rule):
+    def __init__(self, rule=None, matrices=None):
         self.rule = rule
 
-        self.AAA_from_CDR = grow_list(
-            lambda self_: _AAA_from_CDR(rule, len(self_))
-        )
+        if rule != None:
+            if matrices != None:
+                raise ValueError
+            else:
+                self.AAA_from_CDR = grow_list(
+                    lambda self_: _AAA_from_CDR(rule, len(self_))
+                )
+        else:
+            if matrices == None:
+                raise ValueError
+            else:
+                self.AAA_from_CDR = matrices
 
         self.CDR_from_AAA = invert_grow_list(self.AAA_from_CDR)
 
