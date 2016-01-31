@@ -46,8 +46,14 @@ from __future__ import print_function
 from __future__ import unicode_literals
 __metaclass__ = type
 
+import itertools
 import re
+
+from .fibonacci import FIBONACCI
 from .fibonacci import FIB_WORDS
+from .matrices import fib_zeros_array
+from .matrices import grow_list
+from .matrices import invert_grow_list
 from .rankmatrices import CD_from_word
 from .rankmatrices import word_from_CD
 
@@ -97,6 +103,61 @@ def iter_pairs(n):
         if tmp:
             pre, c, post = tmp
             yield pre + c + post, c + pre + post
+
+
+@grow_list
+def identity(self):
+
+    deg = len(self)
+    value = fib_zeros_array(deg, deg)
+
+    for j, word in enumerate(FIB_WORDS[deg]):
+        i = j
+        value[i, j] += 1
+
+    return value
+
+invert_identity = invert_grow_list(identity)
+
+
+@grow_list
+def basic_from_CDR(self):
+    '''Diagonal elements, and ensure C and D rules non-negative.
+    '''
+
+    d = len(self)
+    value = fib_zeros_array(d, d)
+
+
+    # Step 1.  Add C^d (which always has index 0).
+    word = b'\x01' * d
+    i = j = FIB_WORDS[d].index(word)
+    value[i, j] += 1
+
+    # Step 2.  Everything of the form Dw.
+    if d >= 2:
+        src = self[d - 2]
+
+        # Iterate over the src array.
+        # TODO: Refactor.
+        ranges = map(range, src.shape)
+        for coord in itertools.product(*ranges):
+            coeff = src[coord]
+            if coeff:
+                i, j = coord
+                i_word = FIB_WORDS[d-2][i]
+                j_word = FIB_WORDS[d-2][j]
+
+                # Compute and use new words.
+                new_i = FIB_WORDS[d].index(b'\x02' + i_word)
+                new_j = FIB_WORDS[d].index(b'\x02' + j_word)
+
+                # Increment value.
+                value[new_i, new_j] += 1
+
+    return value
+
+# CDR_from_basic = invert_grow_list(basic_from_CDR)
 
 
 if __name__ == '__main__':
