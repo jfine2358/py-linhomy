@@ -5,22 +5,24 @@ Arises from
 
 >>> for chain in iter_chains(4):
 ...     str(' ').join(map(CD_from_word, chain))
+'CDC CCD'
 
 >>> for chain in iter_chains(5):
 ...     str(' ').join(map(CD_from_word, chain))
-'CDCC CCDC'
+'CDCC CCDC CCCD'
 
 >>> for chain in iter_chains(6):
 ...     str(' ').join(map(CD_from_word, chain))
-'CDCCC CCDCC CCCDC'
+'CDCCC CCDCC CCCDC CCCCD'
+'CDDC CCDD'
 
 >>> for chain in iter_chains(8):
 ...     str(' ').join(map(CD_from_word, chain))
-'CDCCCCC CCDCCCC CCCDCCC CCCCDCC CCCCCDC'
+'CDCCCCC CCDCCCC CCCDCCC CCCCDCC CCCCCDC CCCCCCD'
 'CDCCCD CCDCCD CCCDCD'
 'CDCCDC CCDCDC'
-'CDDCCC CCDDCC CCCDDC'
-
+'CDDCCC CCDDCC CCCDDC CCCCDD'
+'CDDDC CCDDD'
 
 Arises from
     C{D_1 ...} + {D_1C ...} = {CD_1 ...}
@@ -65,7 +67,8 @@ from .rankmatrices import CD_from_word
 from .rankmatrices import word_from_CD
 
 
-split_re = re.compile(b'(\x01\x02+\x01)(\x01+)(.*)')
+# TODO: Document or explain this regular expression.
+split_re = re.compile(b'(\x01\x02+)(\x01+)((?:\x01|$).*)')
 def split_word(word):
 
     mo = split_re.match(word)
