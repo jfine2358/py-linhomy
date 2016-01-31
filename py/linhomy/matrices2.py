@@ -3,6 +3,13 @@
 Arises from
   C^r{CD_1 ...} + {C^rD_1C ...} = {C^rCD_1 ...}
 
+>>> for chain in iter_chains(4):
+...     str(' ').join(map(CD_from_word, chain))
+
+>>> for chain in iter_chains(5):
+...     str(' ').join(map(CD_from_word, chain))
+'CDCC CCDC'
+
 >>> for chain in iter_chains(6):
 ...     str(' ').join(map(CD_from_word, chain))
 'CDCCC CCDCC CCCDC'
@@ -168,7 +175,16 @@ def basic_from_CDR(self):
         # Add the diagonal value.
         c_col[c_index] += 1
 
+    # Step 4. Do chains, to give values to C^rD for r>1.
+    for chain in iter_chains(d):
+        for word_1, word_2 in zip(chain, chain[1:]):
+            index_1 = FIB_WORDS[d].index(word_1)
+            index_2 = FIB_WORDS[d].index(word_2)
 
+            value[:, index_2] += value[:, index_1]
+
+        # Add the diagonal value.
+        value[index_2, index_2] += 1
 
     return value
 
