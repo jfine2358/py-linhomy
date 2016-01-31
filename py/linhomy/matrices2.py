@@ -46,6 +46,21 @@ Arises from
 'DCCD CDCD'
 'DDCC CDDC'
 
+
+I've made a mistake somewhere.  Should get negatives.
+>>> basic_matrices.print_C_stats(10)
+0 [(1, 1)]
+1 [(0, 1), (1, 1)]
+2 [(0, 3), (1, 2), (2, 1)]
+3 [(-2, 1), (-1, 1), (0, 9), (1, 3), (2, 1)]
+4 [(-2, 1), (-1, 1), (0, 31), (1, 5), (2, 2)]
+5 [(-2, 2), (-1, 3), (0, 87), (1, 8), (2, 4)]
+6 [(-2, 6), (-1, 5), (0, 243), (1, 13), (2, 6)]
+7 [(-2, 12), (-1, 10), (0, 660), (1, 21), (2, 11)]
+8 [(-2, 26), (-1, 17), (0, 1776), (1, 34), (2, 17)]
+9 [(-2, 52), (-1, 30), (0, 4729), (1, 55), (2, 29)]
+10 [(-2, 103), (-1, 50), (0, 12528), (1, 89), (2, 46)]
+
 '''
 
 # For Python2 compatibility
@@ -65,6 +80,7 @@ from .matrices import grow_list
 from .matrices import invert_grow_list
 from .rankmatrices import CD_from_word
 from .rankmatrices import word_from_CD
+from .rankmatrices import RankMatrices
 
 
 # TODO: Document or explain this regular expression.
@@ -193,6 +209,8 @@ def basic_from_CDR(self):
     return value
 
 CDR_from_basic = invert_grow_list(basic_from_CDR)
+
+basic_matrices = RankMatrices(matrices=basic_from_CDR)
 
 
 if __name__ == '__main__':
