@@ -184,14 +184,15 @@ def basic_from_CDR(self):
             index_1 = FIB_WORDS[d].index(word_1)
             index_2 = FIB_WORDS[d].index(word_2)
 
+            # Transfer the existing values.
             value[:, index_2] += value[:, index_1]
 
-        # Add the diagonal value.
-        value[index_2, index_2] += 1
+            # Add the diagonal value.
+            value[index_2, index_2] += 1
 
     return value
 
-# CDR_from_basic = invert_grow_list(basic_from_CDR)
+CDR_from_basic = invert_grow_list(basic_from_CDR)
 
 
 if __name__ == '__main__':
