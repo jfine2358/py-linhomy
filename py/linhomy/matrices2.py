@@ -155,6 +155,21 @@ def basic_from_CDR(self):
                 # Increment value.
                 value[new_i, new_j] += 1
 
+    # Step 3. Do all the pairs, to give value to CDw.
+    for d_word, c_word in iter_pairs(d):
+        d_index = FIB_WORDS[d].index(d_word)
+        c_index = FIB_WORDS[d].index(c_word)
+
+        # Transfer values from d_col to c_col.
+        d_col = value[:, d_index]
+        c_col = value[:, c_index]
+        c_col += d_col
+
+        # Add the diagonal value.
+        c_col[c_index] += 1
+
+
+
     return value
 
 # CDR_from_basic = invert_grow_list(basic_from_CDR)
