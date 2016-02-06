@@ -51,15 +51,15 @@ I've made a mistake somewhere.  Should not get negatives.
 >>> basic_matrices.print_C_stats(10)
 0 [(1, 1)]
 1 [(0, 1), (1, 1)]
-2 [(0, 3), (1, 2), (2, 1)]
-3 [(-2, 1), (-1, 1), (0, 9), (1, 3), (2, 1)]
-4 [(-2, 1), (-1, 1), (0, 31), (1, 5), (2, 2)]
-5 [(-2, 2), (-1, 3), (0, 87), (1, 8), (2, 4)]
-6 [(-2, 6), (-1, 5), (0, 243), (1, 13), (2, 6)]
-7 [(-2, 12), (-1, 10), (0, 660), (1, 21), (2, 11)]
-8 [(-2, 26), (-1, 17), (0, 1776), (1, 34), (2, 17)]
-9 [(-2, 52), (-1, 30), (0, 4729), (1, 55), (2, 29)]
-10 [(-2, 103), (-1, 50), (0, 12528), (1, 89), (2, 46)]
+2 [(0, 3), (1, 3)]
+3 [(0, 11), (1, 4)]
+4 [(0, 33), (1, 7)]
+5 [(0, 92), (1, 12)]
+6 [(-1, 1), (0, 253), (1, 19)]
+7 [(-1, 2), (0, 680), (1, 32)]
+8 [(-1, 5), (0, 1814), (1, 51)]
+9 [(-1, 9), (0, 4802), (1, 84)]
+10 [(-1, 17), (0, 12664), (1, 135)]
 
 This allow us to find what is going wrong.
 >>> for d in range(1, 7):
@@ -68,32 +68,32 @@ This allow us to find what is going wrong.
 2 CC -> CC
 2 D -> D
 3 CCC -> CCC
-3 CD -> CD DC
+3 CD -> CD
 3 DC -> DC
 4 CCCC -> CCCC
-4 CCD -> CCD CDC DCC
-4 CDC -> CDC DCC
+4 CCD -> CCD CDC
+4 CDC -> CDC
 4 DCC -> DCC
 4 DD -> DD
 5 CCCCC -> CCCCC
-5 CCCD -> CCCD CCDC CDCC DCCC
-5 CCDC -> CCDC CDCC DCCC
-5 CDCC -> CDCC DCCC
-5 CDD -> CDD DDC
+5 CCCD -> CCCD CCDC CDCC
+5 CCDC -> CCDC CDCC
+5 CDCC -> CDCC
+5 CDD -> CDD
 5 DCCC -> DCCC
-5 DCD -> DCD DDC
+5 DCD -> DCD
 5 DDC -> DDC
 6 CCCCCC -> CCCCCC
-6 CCCCD -> CCCCD CCCDC CCDCC CDCCC DCCCC
-6 CCCDC -> CCCDC CCDCC CDCCC DCCCC
-6 CCDCC -> CCDCC CDCCC DCCCC
-6 CCDD -> CCDD CDDC DDCC
-6 CDCCC -> CDCCC DCCCC
-6 CDCD -> CDCD DCCD DCDC DDCC
-6 CDDC -> CDDC DDCC
+6 CCCCD -> CCCCD CCCDC CCDCC CDCCC
+6 CCCDC -> CCCDC CCDCC CDCCC
+6 CCDCC -> CCDCC CDCCC
+6 CCDD -> CCDD CDDC
+6 CDCCC -> CDCCC
+6 CDCD -> CDCD
+6 CDDC -> CDDC
 6 DCCCC -> DCCCC
-6 DCCD -> DCCD DCDC DDCC
-6 DCDC -> DCDC DDCC
+6 DCCD -> DCCD DCDC
+6 DCDC -> DCDC
 6 DDCC -> DDCC
 6 DDD -> DDD
 '''
@@ -224,7 +224,9 @@ def basic_from_CDR(self):
         # Transfer values from d_col to c_col.
         d_col = value[:, d_index]
         c_col = value[:, c_index]
-        c_col += d_col
+        # This is wrong, at least as is.
+        if 0:
+            c_col += d_col
 
         # Add the diagonal value.
         c_col[c_index] += 1
