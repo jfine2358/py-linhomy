@@ -55,11 +55,11 @@ I've made a mistake somewhere.  Should not get negatives.
 3 [(0, 11), (1, 4)]
 4 [(0, 33), (1, 7)]
 5 [(0, 92), (1, 12)]
-6 [(-1, 1), (0, 253), (1, 19)]
-7 [(-1, 2), (0, 680), (1, 32)]
-8 [(-1, 5), (0, 1814), (1, 51)]
-9 [(-1, 9), (0, 4802), (1, 84)]
-10 [(-1, 17), (0, 12664), (1, 135)]
+6 [(0, 254), (1, 19)]
+7 [(-1, 1), (0, 681), (1, 32)]
+8 [(-1, 2), (0, 1816), (1, 52)]
+9 [(-1, 6), (0, 4804), (1, 85)]
+10 [(-1, 12), (0, 12665), (1, 139)]
 
 This allow us to find what is going wrong.
 >>> for d in range(1, 7):
@@ -104,10 +104,10 @@ This allow us to find what is going wrong.
 7 CCCDCC -> CCCDCC CCDCCC CDCCCC
 7 CCCDD -> CCCDD CCDDC CDDCC
 7 CCDCCC -> CCDCCC CDCCCC
-7 CCDCD -> CCDCD CDCCD
+7 CCDCD -> CCDCD CDCCD CDCDC
 7 CCDDC -> CCDDC CDDCC
 7 CDCCCC -> CDCCCC
-7 CDCCD -> CDCCD
+7 CDCCD -> CDCCD CDCDC
 7 CDCDC -> CDCDC
 7 CDDCC -> CDDCC
 7 CDDD -> CDDD
@@ -240,7 +240,27 @@ def basic_from_CDR(self):
                 value[new_i, new_j] += 1
 
     # Step 3. Do all the pairs, to give value to CDw.
+    if d >= 1:
+        prev_matrix = self[d-1]
+        for src in FIB_WORDS[d-1]:
+            if src.startswith(b'\x02'):
+
+                # Calculate where to make the transfer.
+                d_word = src
+                c_word = b'\x01' + src
+                d_index = FIB_WORDS[d-1].index(d_word)
+                c_index = FIB_WORDS[d].index(c_word)
+
+                # Prepare for transfer.
+                d_col = prev_matrix[:, d_index]
+                c_col = value[:, c_index]
+
+                # Make the transfer.
+                c_col[:d_col.shape[0]] += d_col
+
+    # Skip this - left only for reference.
     for d_word, c_word in iter_pairs(d):
+        break
         d_index = FIB_WORDS[d].index(d_word)
         c_index = FIB_WORDS[d].index(c_word)
 
