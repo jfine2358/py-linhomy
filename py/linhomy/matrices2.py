@@ -62,7 +62,7 @@ I've made a mistake somewhere.  Should not get negatives.
 10 [(-1, 17), (0, 12664), (1, 135)]
 
 This allow us to find what is going wrong.
->>> for d in range(1, 7):
+>>> for d in range(1, 8):
 ...     basic_matrices.print_rule(d)
 1 C -> C
 2 CC -> CC
@@ -96,6 +96,27 @@ This allow us to find what is going wrong.
 6 DCDC -> DCDC
 6 DDCC -> DDCC
 6 DDD -> DDD
+7 CCCCCCC -> CCCCCCC
+7 CCCCCD -> CCCCCD CCCCDC CCCDCC CCDCCC CDCCCC
+7 CCCCDC -> CCCCDC CCCDCC CCDCCC CDCCCC
+7 CCCDCC -> CCCDCC CCDCCC CDCCCC
+7 CCCDD -> CCCDD CCDDC CDDCC
+7 CCDCCC -> CCDCCC CDCCCC
+7 CCDCD -> CCDCD CDCCD
+7 CCDDC -> CCDDC CDDCC
+7 CDCCCC -> CDCCCC
+7 CDCCD -> CDCCD
+7 CDCDC -> CDCDC
+7 CDDCC -> CDDCC
+7 CDDD -> CDDD
+7 DCCCCC -> DCCCCC
+7 DCCCD -> DCCCD DCCDC DCDCC
+7 DCCDC -> DCCDC DCDCC
+7 DCDCC -> DCDCC
+7 DCDD -> DCDD
+7 DDCCC -> DDCCC
+7 DDCD -> DDCD
+7 DDDC -> DDDC
 '''
 
 # For Python2 compatibility
