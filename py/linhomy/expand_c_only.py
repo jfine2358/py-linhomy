@@ -109,7 +109,6 @@ import itertools
 from .fibonacci import FIB_WORDS
 from .rankmatrices import RankMatrices
 from .rankmatrices import candidate_rule_factory
-from .rankmatrices import print_rule
 from .rankmatrices import CD_from_word
 from .rankmatrices import word_from_CD
 from .rankmatrices import index_from_word

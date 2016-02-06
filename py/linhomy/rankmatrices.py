@@ -204,7 +204,7 @@ True
 
 This shows that candidate_rule_1 is wrong - transposition.
 >>> for d in range(1, 4):
-...     print_rule(candidate_rule_1, d)
+...     cm_1.print_rule(d)
 1 C C
 2 CC CC
 2 D D
@@ -273,7 +273,7 @@ The candidate_rule_2 should not here have CDCC.
     5 DCD CCDC CDCC DCD
 There may be other errors.
 >>> for d in range(1, 6):
-...     print_rule(candidate_rule_2, d)
+...     cm_2.print_rule(d)
 1 C C
 2 CC CC
 2 D D
@@ -350,7 +350,7 @@ rule at d=7.
 10 4 [(-2, 2), (-1, 22), (0, 5361), (1, 375), (2, 23), (3, 2)]
 10 5 [(-2, 7), (-1, 37), (0, 5258), (1, 361), (2, 33)]
 
->>> print_rule(candidate_rule_3, 5)
+>>> cm_3.print_rule(5)
 5 CCCCC CCCCC
 5 CCCD CCCD CCDC CDCC
 5 CCDC CCDC CDCC
@@ -360,7 +360,7 @@ rule at d=7.
 5 DCD CCDC DCD
 5 DDC DDC
 
->>> print_rule(candidate_rule_3, 6)
+>>> cm_3.print_rule(6)
 6 CCCCCC CCCCCC
 6 CCCCD CCCCD CCCDC CCDCC CDCCC
 6 CCCDC CCCDC CCDCC CDCCC
@@ -375,7 +375,7 @@ rule at d=7.
 6 DDCC DDCC
 6 DDD DDD
 
->>> print_rule(candidate_rule_3, 7)
+>>> cm_3.print_rule(7)
 7 CCCCCCC CCCCCCC
 7 CCCCCD CCCCCD CCCCDC CCCDCC CCDCCC CDCCCC
 7 CCCCDC CCCCDC CCCDCC CCDCCC CDCCCC
@@ -577,6 +577,20 @@ class RankMatrices:
             print(d, sorted(counter.items()))
 
 
+    def print_rule(self, d):
+
+        matrix = self.AAA_from_CDR[d]
+        for j in range(matrix.shape[1]):
+            src = CD_from_word(FIB_WORDS[d][j])
+            col = matrix[:,j]
+            bits = sorted(
+                CD_from_word(word)
+                for (coeff, word) in zip(col, FIB_WORDS[d])
+                if coeff
+            )
+            print(d, src, str(' ').join(bits))
+
+
 identity_matrices = RankMatrices(identity_rule)
 
 
@@ -762,14 +776,6 @@ def word_from_CD(s):
         str('D'): b'\x02',
     }
     return b''.join(d[c] for c in s)
-
-
-def print_rule(rule, d):
-
-    for word in FIB_WORDS[d]:
-        src = CD_from_word(word)
-        bits = sorted(map(CD_from_word, rule(word)))
-        print(d, src, str(' ').join(bits))
 
 
 if __name__ == '__main__':
