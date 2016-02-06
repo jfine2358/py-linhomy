@@ -47,7 +47,7 @@ Arises from
 'DDCC CDDC'
 
 
-I've made a mistake somewhere.  Should get negatives.
+I've made a mistake somewhere.  Should not get negatives.
 >>> basic_matrices.print_C_stats(10)
 0 [(1, 1)]
 1 [(0, 1), (1, 1)]
@@ -61,6 +61,41 @@ I've made a mistake somewhere.  Should get negatives.
 9 [(-2, 52), (-1, 30), (0, 4729), (1, 55), (2, 29)]
 10 [(-2, 103), (-1, 50), (0, 12528), (1, 89), (2, 46)]
 
+This allow us to find what is going wrong.
+>>> for d in range(1, 7):
+...     basic_matrices.print_rule(d)
+1 C -> C
+2 CC -> CC
+2 D -> D
+3 CCC -> CCC
+3 CD -> CD DC
+3 DC -> DC
+4 CCCC -> CCCC
+4 CCD -> CCD CDC DCC
+4 CDC -> CDC DCC
+4 DCC -> DCC
+4 DD -> DD
+5 CCCCC -> CCCCC
+5 CCCD -> CCCD CCDC CDCC DCCC
+5 CCDC -> CCDC CDCC DCCC
+5 CDCC -> CDCC DCCC
+5 CDD -> CDD DDC
+5 DCCC -> DCCC
+5 DCD -> DCD DDC
+5 DDC -> DDC
+6 CCCCCC -> CCCCCC
+6 CCCCD -> CCCCD CCCDC CCDCC CDCCC DCCCC
+6 CCCDC -> CCCDC CCDCC CDCCC DCCCC
+6 CCDCC -> CCDCC CDCCC DCCCC
+6 CCDD -> CCDD CDDC DDCC
+6 CDCCC -> CDCCC DCCCC
+6 CDCD -> CDCD DCCD DCDC DDCC
+6 CDDC -> CDDC DDCC
+6 DCCCC -> DCCCC
+6 DCCD -> DCCD DCDC DDCC
+6 DCDC -> DCDC DDCC
+6 DDCC -> DDCC
+6 DDD -> DDD
 '''
 
 # For Python2 compatibility
