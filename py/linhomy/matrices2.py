@@ -27,20 +27,20 @@ Arises from
 Arises from
     C{D_1 ...} + {D_1C ...} = {CD_1 ...}
 
->>> for chain in iter_pairs(3):
+>>> for chain in old_iter_pairs(3):
 ...     str(' ').join(map(CD_from_word, chain))
 'DC CD'
 
->>> for chain in iter_pairs(4):
+>>> for chain in old_iter_pairs(4):
 ...     str(' ').join(map(CD_from_word, chain))
 'DCC CDC'
 
->>> for chain in iter_pairs(5):
+>>> for chain in old_iter_pairs(5):
 ...     str(' ').join(map(CD_from_word, chain))
 'DCCC CDCC'
 'DDC CDD'
 
->>> for chain in iter_pairs(6):
+>>> for chain in old_iter_pairs(6):
 ...     str(' ').join(map(CD_from_word, chain))
 'DCCCC CDCCC'
 'DCCD CDCD'
@@ -201,26 +201,26 @@ def chain_from_split(pre, c_s, post):
 
 
 def iter_chains(n):
-
+    '''Redundant - left only for reference.'''
     for word in FIB_WORDS[n]:
         tmp = split_word(word)
         if tmp:
             yield chain_from_split(*tmp)
 
 
-pair_split_re = re.compile(b'(\x02+)(\x01)((?!\x02).*)')
-def pair_split(word):
+old_pair_split_re = re.compile(b'(\x02+)(\x01)((?!\x02).*)')
+def old_pair_split(word):
 
-    mo = pair_split_re.match(word)
+    mo = old_pair_split_re.match(word)
     if mo:
         return mo.groups()
     else:
         return None
 
-def iter_pairs(n):
+def old_iter_pairs(n):
 
     for word in FIB_WORDS[n]:
-        tmp = pair_split(word)
+        tmp = old_pair_split(word)
         if tmp:
             pre, c, post = tmp
             yield pre + c + post, c + pre + post
@@ -296,7 +296,7 @@ def basic_from_CDR(self):
                 c_col[:d_col.shape[0]] += d_col
 
     # Skip this - left only for reference.
-    for d_word, c_word in iter_pairs(d):
+    for d_word, c_word in old_iter_pairs(d):
         break
         d_index = FIB_WORDS[d].index(d_word)
         c_index = FIB_WORDS[d].index(c_word)
