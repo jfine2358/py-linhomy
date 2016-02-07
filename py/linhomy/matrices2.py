@@ -24,6 +24,28 @@ Arises from
 'CDDCCC CCDDCC CCCDDC CCCCDD'
 'CDDDC CCDDD'
 
+Arises from C_1{CD_1 ...} in
+    C_1{CD_1 ...} + {C_1D_C ...} = {C_1CD_1 ...}
+
+>>> for pair in iter_pairs(3):
+...     str(' ').join(map(CD_from_word, pair))
+
+>>> for pair in iter_pairs(4):
+...     str(' ').join(map(CD_from_word, pair))
+'C CD'
+
+>>> for pair in iter_pairs(5):
+...     str(' ').join(map(CD_from_word, pair))
+'CC CD'
+'C CDC'
+
+>>> for pair in iter_pairs(6):
+...     str(' ').join(map(CD_from_word, pair))
+'CCC CD'
+'CC CDC'
+'C CDCC'
+'C CDD'
+
 Arises from
     C{D_1 ...} + {D_1C ...} = {CD_1 ...}
 
@@ -224,6 +246,24 @@ def old_iter_pairs(n):
         if tmp:
             pre, c, post = tmp
             yield pre + c + post, c + pre + post
+
+
+pair_split_re = re.compile(b'(\x01+)(\x01\x02.*)')
+def pair_split(word):
+
+    mo = pair_split_re.match(word)
+    if mo:
+        return mo.groups()
+    else:
+        return None
+
+def iter_pairs(n):
+
+    for word in FIB_WORDS[n]:
+        tmp = pair_split(word)
+        if tmp:
+            yield tmp
+
 
 
 @grow_list
