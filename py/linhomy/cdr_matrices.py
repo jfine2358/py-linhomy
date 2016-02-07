@@ -27,6 +27,12 @@ def basic_2(word):
     yield  b2 + word
 
 
+def shift_1(word):
+    if word.startswith(b1 + b1):
+        i = (word + b1).find(b2 + b1)
+        if i != -1:
+            return word[1:i+1] + b1 + word[i+1:]
+
 def apply_rule(rule, items):
 
     value = set()
@@ -75,6 +81,9 @@ def factory(rule_11, rule_12, rule_2):
                 else:
                     add(apply_rule(rule_11, pre_C[key]))
 
+                    tmp = shift_1(b1 + key)
+                    if tmp:
+                        add(value[tmp])
 
         # Normalise the value.
         tmp = dict()
@@ -87,6 +96,6 @@ def factory(rule_11, rule_12, rule_2):
 
 x = factory(basic_11, basic_12, basic_2)
 
-for i in range(7):
-    print(len(x[i]), x[i])
-    print(' '.join(sorted(x[i].keys())))
+for i in range(9):
+    for k, v in sorted(x[i].items()):
+        print(i, k, '->', ' '.join(v), '.')
