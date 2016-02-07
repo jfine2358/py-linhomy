@@ -5,6 +5,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 __metaclass__ = type
 
+from collections import defaultdict
 from itertools import chain
 from .matrices import grow_list
 
@@ -33,7 +34,7 @@ def apply_rule(rule, items):
         for tgt in rule(src):
             value.add(tgt)
 
-    return tuple(sorted(value))
+    return value
 
 
 def sort_by_leading_1(words):
@@ -50,41 +51,37 @@ def factory(rule_11, rule_12, rule_2):
 
     @grow_list
     def grow_fn(self):
-        value = dict()
+        value = defaultdict(set)
         d = len(self)
 
         if d == 0:
-            value[b_empty] = (b_empty,)
+            value[b_empty].add(b_empty)
 
         else:
             # If possible, perform rule_2.
             if d - 2 >= 0:
                 for keyword, items in self[d-2].items():
-                    value[b2 + keyword] = apply_rule(rule_2, items)
+                    value[b2 + keyword].update(apply_rule(rule_2, items))
 
-            # Prepare for rule_11 and rule_12.
             pre_C = self[d-1]
-            pre_C_keys = tuple(sorted(pre_C.keys()))
+            pre_C_keys = sort_by_leading_1(pre_C.keys())
 
-            # Perform rule_12
-            rule_12_keys = tuple(
-                key for key in pre_C_keys
-                if key.startswith(b2)
-            )
+            for key in pre_C_keys:
+                add = value[b1 + key].update
 
-            for keyword in rule_12_keys:
-                value[b1 + keyword] = tuple(sorted(rule_12(keyword)))
+                if key.startswith(b2):
+                    add(rule_12(key))
 
-            # Perform rule_11.
-            rule_11_keys = tuple(
-                key for key in pre_C_keys
-                if key[:1] in {b_empty, b1}
-            )
-            for keyword in rule_11_keys:
-                items = pre_C[keyword]
-                value[b1 + keyword] = apply_rule(rule_11, items)
+                else:
+                    add(apply_rule(rule_11, pre_C[key]))
 
-        return value
+
+        # Normalise the value.
+        tmp = dict()
+        for k, v in value.items():
+            tmp[k] = tuple(sorted(v))
+
+        return tmp
 
     return grow_fn
 
