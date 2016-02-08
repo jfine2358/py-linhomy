@@ -75,14 +75,17 @@ def factory(rule_11, rule_12, rule_2):
             for key in pre_C_keys:
                 add = value[b1 + key].update
 
+                # TODO: Not quite right. Iterate over pre_C[key]?
                 if key.startswith(b2):
-                    add(rule_12(key))
-
+                    add(apply_rule(rule_12, pre_C[key]))
                 else:
                     add(apply_rule(rule_11, pre_C[key]))
 
                     tmp = shift_1(b1 + key)
                     if tmp:
+                        # Check value[tmp] already calculated.
+                        if not tmp in value:
+                            raise ValueError
                         add(value[tmp])
 
         # Normalise the value.
