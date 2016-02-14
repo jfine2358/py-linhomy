@@ -166,6 +166,7 @@ __metaclass__ = type
 
 from collections import defaultdict
 from itertools import chain
+from sys import stderr
 from .fibonacci import FIB_WORDS
 from .matrices import fib_zeros_array
 from .matrices import grow_list
@@ -196,6 +197,13 @@ def shift_1(word):
         i = (word + b1).find(b2 + b1)
         if i != -1:
             return word[1:i+1] + b1 + word[i+1:]
+
+def shift_1_var(word):
+
+    d_start = word.find(b2)
+    d_stop = (word + b1).find(b1, d_start)
+    return word[d_start:d_stop] + word[:d_start] + word[d_stop:]
+
 
 def apply_rule(rule, items):
 
@@ -240,23 +248,35 @@ def rules_factory(rule_11, rule_12, rule_2):
             pre_C_keys = sort_by_leading_1(pre_C.keys())
 
             for key in pre_C_keys:
-                add = value[b1 + key].update
+                add = value[b1 + key].add
+                update = value[b1 + key].update
 
-                # Iterate over pre_C[key].
+                # Special case - no D in key (and so 'C' * d).
+                if b2 not in key:
+                    add(b1 + key)
+                    continue
+
+                # Recursion: {C C_1 D_1 ...} = C{C_1 D_1 ... } + {C D_1 C_1 ...}.
+                if key.startswith(b1):
+                    for item in pre_C[key]:
+                        # Compute C{C_1 D_1 ...}.
+                        if item.startswith(b2):
+                            update(rule_12(item))
+                        else:
+                            update(rule_11(item))
+
+                        # Add previously computed {C D_1 C_1 ...}.
+                        tmp = b1 + shift_1_var(key)
+                        if not tmp in value:
+                            raise ValueError
+                        update(value[tmp])
+                    continue
+
+                # Root the recursion: {C D_1 C_1 ...}.
                 for item in pre_C[key]:
-                    # Case of {CD_1 ...}.
+                    # Case of C[D_1 ...].
                     if item.startswith(b2):
-                        add(rule_12(item))
-                    # Case of {CC ...}
-                    else:
-                        add(rule_11(item))
-
-                tmp = shift_1(b1 + key)
-                if tmp:
-                    # Check value[tmp] already calculated.
-                    if not tmp in value:
-                        raise ValueError
-                    add(value[tmp])
+                        update(rule_12(item))
 
         # Normalise the value.
         tmp = dict()
