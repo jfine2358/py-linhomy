@@ -53,7 +53,7 @@ def sort_by_leading_1(words):
     return tuple(pair[1] for pair in (pairs))
 
 
-def factory(rule_11, rule_12, rule_2):
+def rules_factory(rule_11, rule_12, rule_2):
 
     @grow_list
     def grow_fn(self):
@@ -97,8 +97,16 @@ def factory(rule_11, rule_12, rule_2):
 
     return grow_fn
 
-x = factory(basic_11, basic_12, basic_2)
+
+def cdr_print(rules, d):
+    format = '{d} {src} -> {val}.'.format
+    for k, v in sorted(rules[d].items()):
+        val = ' '.join(v)
+        s = format(d=d, src=k, val=val)
+        print(s)
+
+
+basic_rules = rules_factory(basic_11, basic_12, basic_2)
 
 for i in range(9):
-    for k, v in sorted(x[i].items()):
-        print(i, k, '->', ' '.join(v), '.')
+    cdr_print(basic_rules, i)
