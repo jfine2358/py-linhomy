@@ -245,12 +245,12 @@ def rules_factory(rule_11, rule_12, rule_2):
                 else:
                     add(apply_rule(rule_11, pre_C[key]))
 
-                    tmp = shift_1(b1 + key)
-                    if tmp:
-                        # Check value[tmp] already calculated.
-                        if not tmp in value:
-                            raise ValueError
-                        add(value[tmp])
+                tmp = shift_1(b1 + key)
+                if tmp:
+                    # Check value[tmp] already calculated.
+                    if not tmp in value:
+                        raise ValueError
+                    add(value[tmp])
 
         # Normalise the value.
         tmp = dict()
