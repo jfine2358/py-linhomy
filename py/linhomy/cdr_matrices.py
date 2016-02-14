@@ -224,26 +224,32 @@ def rules_factory(rule_11, rule_12, rule_2):
         value = defaultdict(set)
         d = len(self)
 
+        # Start the recursion.
         if d == 0:
             value[b_empty].add(b_empty)
 
         else:
+            # Use {D...} = D{...} to compute new values.
             # If possible, perform rule_2.
             if d - 2 >= 0:
                 for keyword, items in self[d-2].items():
                     value[b2 + keyword].update(apply_rule(rule_2, items))
 
+            # Use C rules to compute new values.
             pre_C = self[d-1]
             pre_C_keys = sort_by_leading_1(pre_C.keys())
 
             for key in pre_C_keys:
                 add = value[b1 + key].update
 
-                # TODO: Not quite right. Iterate over pre_C[key]?
-                if key.startswith(b2):
-                    add(apply_rule(rule_12, pre_C[key]))
-                else:
-                    add(apply_rule(rule_11, pre_C[key]))
+                # Iterate over pre_C[key].
+                for item in pre_C[key]:
+                    # Case of {CD_1 ...}.
+                    if item.startswith(b2):
+                        add(rule_12(item))
+                    # Case of {CC ...}
+                    else:
+                        add(rule_11(item))
 
                 tmp = shift_1(b1 + key)
                 if tmp:
