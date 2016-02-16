@@ -225,11 +225,25 @@ def sort_by_leading_1(words):
     return tuple(pair[1] for pair in (pairs))
 
 
+class mycheckset(set):
+    '''Like set, but raises ValueError if existing member added.
+    '''
+
+    def add(self, item):
+        if item in self:
+            raise ValueError(item, self)
+        set.add(self, item)
+
+    def update(self, items):
+        for item in items:
+            self.add(item)
+
+
 def rules_factory(rule_11, rule_12, rule_2):
 
     @grow_list
     def grow_fn(self):
-        value = defaultdict(set)
+        value = defaultdict(mycheckset)
         d = len(self)
 
         # Start the recursion.
@@ -258,6 +272,7 @@ def rules_factory(rule_11, rule_12, rule_2):
 
                 # Recursion: {C C_1 D_1 ...} = C{C_1 D_1 ... } + {C D_1 C_1 ...}.
                 if key.startswith(b1):
+                    #  Apply C to [] values in C{C_1 D_1 ... }.
                     for item in pre_C[key]:
                         # Compute C{C_1 D_1 ...}.
                         if item.startswith(b2):
@@ -265,11 +280,12 @@ def rules_factory(rule_11, rule_12, rule_2):
                         else:
                             update(rule_11(item))
 
-                        # Add previously computed {C D_1 C_1 ...}.
-                        tmp = b1 + shift_1_var(key)
-                        if not tmp in value:
-                            raise ValueError
-                        update(value[tmp])
+                    # Add previously computed {C D_1 C_1 ...}.
+                    tmp = b1 + shift_1_var(key)
+                    if not tmp in value:
+                        raise ValueError
+                    update(value[tmp])
+
                     continue
 
                 # Root the recursion: {C D_1 C_1 ...}.
