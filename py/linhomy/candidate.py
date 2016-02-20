@@ -63,6 +63,8 @@ from __future__ import print_function
 from __future__ import unicode_literals
 __metaclass__ = type
 
+import re
+
 from .rankmatrices import RankMatrices
 from .cdr_matrices import b_empty
 from .cdr_matrices import b1
@@ -71,16 +73,41 @@ from .cdr_matrices import rules_factory
 from .cdr_matrices import rule_matrices_from_rules
 from .cdr_matrices import cdr_print
 
+if b1 != 'C' or b2 != 'D':
+    ddt                         # Binary variant not coded.
+
+candidate_2_re = re.compile('(C+)(D+)(.*)')
+def candidate_2_split(s):
+    mo = candidate_2_re.match(s)
+    if mo:
+        return mo.groups()
+
+candidate_12_re = re.compile('(D+)(.*)')
+def candidate_12_split(s):
+    mo = candidate_12_re.match(s)
+    if mo:
+        return mo.groups()
 
 # Start as clone of basic_matrices.
 def candidate_11(word):
     yield b1 + word
 
+
 def candidate_12(word):
     yield b1 + word
+    if 0:
+        bits = candidate_12_split(word)
+        if bits != None:
+            n = len(bits[0])
+            for i in range(1, n):
+                yield b1 + b2 * (n - i) + b1 * (2*i) + bits[1]
 
 def candidate_2(word):
     yield  b2 + word
+    if 0:
+        bits = candidate_2_split(word)
+        if bits != None:
+            yield b1 + bits[0] + bits[1] + b1 + bits[2]
 
 
 candidate_rules = rules_factory(candidate_11, candidate_12, candidate_2)
