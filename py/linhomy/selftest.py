@@ -15,6 +15,8 @@ if __name__ == '__main__':
     import doctest
 
     import linhomy
+    import linhomy.candidate
+    import linhomy.cdr_matrices
     import linhomy.classtools
     import linhomy.data
     import linhomy.fibonacci
@@ -29,6 +31,8 @@ if __name__ == '__main__':
 
     modules = [
         linhomy,
+        linhomy.candidate,
+        linhomy.cdr_matrices,
         linhomy.classtools,
         linhomy.data,
         linhomy.fibonacci,
