@@ -154,6 +154,19 @@ Some negatives, that must be removed. Good outcome for little input.
 10 3 [(0, 5374), (1, 220), (2, 11), (3, 2)]
 10 4 [(-2, 4), (-1, 10), (0, 5519), (1, 228), (2, 22), (3, 2)]
 10 5 [(-2, 6), (-1, 7), (0, 5419), (1, 236), (2, 28)]
+
+
+# More about the negative coefficients.
+>>> for c, w in zip(basic_matrices.doit(4, 4)[1,1], FIB_WORDS[8]):
+...     if c:
+...         print(c, CD_from_word(w))
+2 CCCDCD
+1 CCCDDC
+-2 CCDCDC
+-1 CCDDCC
+2 DCDCD
+1 DCDDC
+
 '''
 
 
