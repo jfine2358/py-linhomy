@@ -76,15 +76,32 @@ Some negatives, that must be removed. Good outcome for little input.
 10 5 [(-2, 5), (-1, 6), (0, 5417), (1, 239), (2, 29)]
 
 
-More about the negative coefficients in product 9 4.
->>> for c, w in zip(candidate_matrices.doit(5, 4)[2,1], FIB_WORDS[9]):
-...     if c: print(c, CD_from_word(w))
-1 CCCDCCD
-2 CCCDCDC
-1 CCCDDCC
-1 DCDCCD
-2 DCDCDC
-1 DCDDCC
+TODO: More negatives to understand.
+More about the negative coefficients in product 10 1.
+>>> for n in [40, 41, 43, 44, 45]:
+...     print('#', n, CD_from_word(FIB_WORDS[10][n]))
+...     for c, w in zip(candidate_matrices.doit(9, 1)[n,0], FIB_WORDS[10]):
+...          if c: print(c, CD_from_word(w))
+# 40 CDCCDCD
+-1 CCCCDCDC
+1 DCCCDCD
+1 DDCDCD
+# 41 CDCCDDC
+-1 CCCCDDCC
+1 DCCCDDC
+1 DDCDDC
+# 43 CDCDCCD
+-1 CCCDCCDC
+1 DCCDCCD
+1 DCDCCCD
+-1 DCDCCDC
+# 44 CDCDCDC
+-1 CCCDCDCC
+1 DCCDCDC
+1 DCDCCDC
+# 45 CDCDDCC
+-1 CCCDDCCC
+1 DCCDDCC
 '''
 
 
