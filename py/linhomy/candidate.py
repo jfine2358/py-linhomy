@@ -15,32 +15,20 @@
 
 Puzzle: Why are these negatives arising?
 
-Unexpected negatives for C-rule 8 investigated.
->>> CD_from_word(FIB_WORDS[9][10])
-'CCCDCDC'
->>> for c, w in zip(candidate_matrices.C_rule[8][10], FIB_WORDS[8]):
+Unexpected negatives for C-rule 9 investigated.
+>>> CD_from_word(FIB_WORDS[10][10])
+'CCCCDCDC'
+>>> for c, w in zip(candidate_matrices.C_rule[9][10], FIB_WORDS[9]):
 ...     if c: print(c, CD_from_word(w))
-1 CCDCDC
+1 CCCDCDC
+-1 DCCDCD
 
->>> CD_from_word(FIB_WORDS[9][11])
-'CCCDDCC'
->>> for c, w in zip(candidate_matrices.C_rule[8][11], FIB_WORDS[8]):
+>>> CD_from_word(FIB_WORDS[10][11])
+'CCCCDDCC'
+>>> for c, w in zip(candidate_matrices.C_rule[9][11], FIB_WORDS[9]):
 ...     if c: print(c, CD_from_word(w))
-1 CCDDCC
-
-
-Unexpected negatives for C-rule 10 investigated.
->>> CD_from_word(FIB_WORDS[11][99])
-'DCCCDCDC'
->>> for c, w in zip(candidate_matrices.C_rule[10][99], FIB_WORDS[10]):
-...     if c: print(c, CD_from_word(w))
-1 DCCDCDC
-
->>> CD_from_word(FIB_WORDS[11][100])
-'DCCCDDCC'
->>> for c, w in zip(candidate_matrices.C_rule[10][100], FIB_WORDS[10]):
-...     if c: print(c, CD_from_word(w))
-1 DCCDDCC
+1 CCCDDCC
+-1 DCCDDC
 
 
 As expected, all zeros and ones.
@@ -87,25 +75,7 @@ Some negatives, that must be removed. Good outcome for little input.
 10 5 [(-2, 5), (-1, 6), (0, 5417), (1, 239), (2, 29)]
 
 
-More about the negative coefficients in product 9 1.
->>> for c, w in zip(candidate_matrices.doit(8, 1)[27,0], FIB_WORDS[9]):
-...     if c: print(c, CD_from_word(w))
-1 DCCDCD
-1 DCDCCD
-
->>> for c, w in zip(candidate_matrices.doit(8, 1)[28,0], FIB_WORDS[9]):
-...     if c: print(c, CD_from_word(w))
-1 DCCDDC
-
 More about the negative coefficients in product 9 4.
->>> for c, w in zip(candidate_matrices.doit(5, 4)[1,1], FIB_WORDS[9]):
-...     if c: print(c, CD_from_word(w))
-2 CCCCDCD
-1 CCCCDDC
-2 DCCDCD
-1 DCCDDC
-1 DCDCCD
-
 >>> for c, w in zip(candidate_matrices.doit(5, 4)[2,1], FIB_WORDS[9]):
 ...     if c: print(c, CD_from_word(w))
 1 CCCDCCD
