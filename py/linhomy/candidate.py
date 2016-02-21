@@ -9,8 +9,8 @@
 6 [(0, 254), (1, 19)]
 7 [(0, 681), (1, 33)]
 8 [(0, 1815), (1, 55)]
-9 [(0, 4808), (1, 87)]
-10 [(-1, 5), (0, 12669), (1, 142)]
+9 [(0, 4803), (1, 92)]
+10 [(-1, 12), (0, 12662), (1, 142)]
 
 
 Puzzle: Why are these negatives arising?
@@ -40,7 +40,7 @@ As expected, all zeros and ones.
 5 [(0, 160), (1, 8)]
 6 [(0, 427), (1, 15)]
 7 [(0, 1129), (1, 26)]
-8 [(0, 2987), (1, 39)]
+8 [(0, 2980), (1, 46)]
 9 [(0, 7865), (1, 55)]
 10 [(0, 20648), (1, 89)]
 
@@ -67,11 +67,11 @@ Some negatives, that must be removed. Good outcome for little input.
 9 2 [(0, 2211), (1, 99)]
 9 3 [(0, 1998), (1, 138), (2, 8), (3, 1)]
 9 4 [(0, 2057), (1, 129), (2, 14)]
-10 1 [(-1, 1), (0, 4773), (1, 121)]
-10 2 [(0, 5893), (1, 159)]
-10 3 [(0, 5344), (1, 246), (2, 15), (3, 2)]
-10 4 [(-2, 1), (-1, 6), (0, 5504), (1, 247), (2, 25), (3, 2)]
-10 5 [(-2, 2), (-1, 1), (0, 5405), (1, 254), (2, 34)]
+10 1 [(-1, 2), (0, 4762), (1, 131)]
+10 2 [(0, 5880), (1, 172)]
+10 3 [(0, 5325), (1, 264), (2, 16), (3, 2)]
+10 4 [(0, 5499), (1, 257), (2, 27), (3, 2)]
+10 5 [(0, 5386), (1, 274), (2, 36)]
 
 
 More about the negative coefficients in product 10 1.
@@ -80,6 +80,8 @@ More about the negative coefficients in product 10 1.
 ...     for c, w in zip(candidate_matrices.doit(9, 1)[n,0], FIB_WORDS[10]):
 ...          if c: print(c, CD_from_word(w))
 # 43 CDCDCCD
+1 CCDCCCDC
+-1 CCDCCDCC
 1 DCCDCCD
 1 DCDCCCD
 -1 DCDCCDC
@@ -95,10 +97,6 @@ More about the negative coefficients in product 10 4.
 1 CCCDCCDC
 2 CCCDCDCC
 1 CCCDDCCC
--1 CCDCCCDC
--1 CCDCCDCC
--2 CCDCDCCC
--1 CCDDCCCC
 1 DCDCCCD
 1 DCDCCDC
 2 DCDCDCC
@@ -107,9 +105,6 @@ More about the negative coefficients in product 10 4.
 1 CCCDCDD
 1 CCCDDCD
 1 CCCDDDC
--1 CCDCDDC
--1 CCDDCDC
--1 CCDDDCC
 1 DCDCDD
 1 DCDDCD
 1 DCDDDC
@@ -124,9 +119,6 @@ More about the negative coefficients in product 10 5.
 2 CCCDCCDC
 2 CCCDCDCC
 1 CCCDDCCC
--2 CCDCCDCC
--2 CCDCDCCC
--1 CCDDCCCC
 2 DCDCCDC
 2 DCDCDCC
 1 DCDDCCC
@@ -192,6 +184,8 @@ def candidate_2(word):
             'CDCCD', 'CDCDC', 'CDDCC',
             # Dimension 8 -> 10.
             'CCCDCD', 'CCCDDC', 'CCDCCD', 'CCDCDC', 'CCDDCC',
+            'CDCCCD', 'CDCCDC', 'CDCDCC', 'CDDCCC',
+            'CDCDD', 'CDDCD', 'CDDDC',
     }:
         yield b1 + word + b1
     if 0:
