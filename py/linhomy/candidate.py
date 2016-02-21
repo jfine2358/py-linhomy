@@ -8,14 +8,15 @@
 5 [(0, 92), (1, 12)]
 6 [(0, 254), (1, 19)]
 7 [(0, 681), (1, 33)]
-8 [(0, 1818), (1, 52)]
-9 [(-1, 2), (0, 4807), (1, 86)]
-10 [(0, 12677), (1, 139)]
+8 [(0, 1815), (1, 55)]
+9 [(-1, 5), (0, 4804), (1, 86)]
+10 [(0, 12674), (1, 142)]
 
 
 Puzzle: Why are these negatives arising?
 
 Unexpected negatives for C-rule 9 investigated.
+TODO: More negatives in C-rule 9.
 >>> CD_from_word(FIB_WORDS[10][10])
 'CCCCDCDC'
 >>> for c, w in zip(candidate_matrices.C_rule[9][10], FIB_WORDS[9]):
@@ -40,7 +41,7 @@ As expected, all zeros and ones.
 4 [(0, 60), (1, 5)]
 5 [(0, 160), (1, 8)]
 6 [(0, 427), (1, 15)]
-7 [(0, 1132), (1, 23)]
+7 [(0, 1129), (1, 26)]
 8 [(0, 2992), (1, 34)]
 9 [(0, 7865), (1, 55)]
 10 [(0, 20648), (1, 89)]
@@ -64,11 +65,11 @@ Some negatives, that must be removed. Good outcome for little input.
 8 2 [(0, 828), (1, 56)]
 8 3 [(0, 738), (1, 73), (2, 5)]
 8 4 [(0, 780), (1, 64), (2, 6)]
-9 1 [(0, 1799), (1, 71)]
-9 2 [(0, 2218), (1, 92)]
-9 3 [(0, 2006), (1, 131), (2, 7), (3, 1)]
-9 4 [(-2, 1), (-1, 2), (0, 2060), (1, 124), (2, 13)]
-10 1 [(-1, 2), (0, 4776), (1, 117)]
+9 1 [(0, 1795), (1, 75)]
+9 2 [(0, 2211), (1, 99)]
+9 3 [(0, 1998), (1, 138), (2, 8), (3, 1)]
+9 4 [(0, 2057), (1, 129), (2, 14)]
+10 1 [(-1, 6), (0, 4774), (1, 115)]
 10 2 [(-1, 2), (0, 5905), (1, 145)]
 10 3 [(0, 5368), (1, 225), (2, 12), (3, 2)]
 10 4 [(-2, 3), (-1, 9), (0, 5518), (1, 231), (2, 22), (3, 2)]
@@ -81,9 +82,6 @@ More about the negative coefficients in product 9 4.
 1 CCCDCCD
 2 CCCDCDC
 1 CCCDDCC
--1 CCDCCDC
--2 CCDCDCC
--1 CCDDCCC
 1 DCDCCD
 2 DCDCDC
 1 DCDDCC
@@ -142,8 +140,11 @@ def candidate_2(word):
     yield  b2 + word
 
     if word in {
+            # Dimension 6 -> 8.
             'CDCD', 'CDDC',
+            # Dimension 7 -> 9.
             'CCDCD', 'CCDDC',
+            'CDCCD', 'CDCDC', 'CDDCC',
     }:
         yield b1 + word + b1
     if 0:
