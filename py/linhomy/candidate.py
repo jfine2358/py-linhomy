@@ -8,9 +8,10 @@
 5 [(0, 92), (1, 12)]
 6 [(0, 254), (1, 19)]
 7 [(0, 681), (1, 33)]
-8 [(-1, 2), (0, 1816), (1, 52)]
-9 [(0, 4809), (1, 86)]
-10 [(-1, 2), (0, 12675), (1, 139)]
+8 [(0, 1818), (1, 52)]
+9 [(-1, 2), (0, 4807), (1, 86)]
+10 [(0, 12677), (1, 139)]
+
 
 Puzzle: Why are these negatives arising?
 
@@ -20,14 +21,12 @@ Unexpected negatives for C-rule 8 investigated.
 >>> for c, w in zip(candidate_matrices.C_rule[8][10], FIB_WORDS[8]):
 ...     if c: print(c, CD_from_word(w))
 1 CCDCDC
--1 DCDCD
 
 >>> CD_from_word(FIB_WORDS[9][11])
 'CCCDDCC'
 >>> for c, w in zip(candidate_matrices.C_rule[8][11], FIB_WORDS[8]):
 ...     if c: print(c, CD_from_word(w))
 1 CCDDCC
--1 DCDDC
 
 
 Unexpected negatives for C-rule 10 investigated.
@@ -36,14 +35,12 @@ Unexpected negatives for C-rule 10 investigated.
 >>> for c, w in zip(candidate_matrices.C_rule[10][99], FIB_WORDS[10]):
 ...     if c: print(c, CD_from_word(w))
 1 DCCDCDC
--1 DDCDCD
 
 >>> CD_from_word(FIB_WORDS[11][100])
 'DCCCDDCC'
 >>> for c, w in zip(candidate_matrices.C_rule[10][100], FIB_WORDS[10]):
 ...     if c: print(c, CD_from_word(w))
 1 DCCDDCC
--1 DDCDDC
 
 
 As expected, all zeros and ones.
@@ -55,10 +52,11 @@ As expected, all zeros and ones.
 4 [(0, 60), (1, 5)]
 5 [(0, 160), (1, 8)]
 6 [(0, 427), (1, 15)]
-7 [(0, 1134), (1, 21)]
+7 [(0, 1132), (1, 23)]
 8 [(0, 2992), (1, 34)]
 9 [(0, 7865), (1, 55)]
 10 [(0, 20648), (1, 89)]
+
 
 Some negatives, that must be removed. Good outcome for little input.
 >>> candidate_matrices.print_product_stats(10)
@@ -78,11 +76,11 @@ Some negatives, that must be removed. Good outcome for little input.
 8 2 [(0, 828), (1, 56)]
 8 3 [(0, 738), (1, 73), (2, 5)]
 8 4 [(0, 780), (1, 64), (2, 6)]
-9 1 [(-1, 2), (0, 1799), (1, 69)]
-9 2 [(0, 2223), (1, 87)]
-9 3 [(0, 2011), (1, 127), (2, 6), (3, 1)]
-9 4 [(-2, 2), (-1, 3), (0, 2061), (1, 122), (2, 12)]
-10 1 [(0, 4776), (1, 119)]
+9 1 [(0, 1799), (1, 71)]
+9 2 [(0, 2218), (1, 92)]
+9 3 [(0, 2006), (1, 131), (2, 7), (3, 1)]
+9 4 [(-2, 1), (-1, 2), (0, 2060), (1, 124), (2, 13)]
+10 1 [(-1, 2), (0, 4776), (1, 117)]
 10 2 [(-1, 2), (0, 5905), (1, 145)]
 10 3 [(0, 5368), (1, 225), (2, 12), (3, 2)]
 10 4 [(-2, 3), (-1, 9), (0, 5518), (1, 231), (2, 22), (3, 2)]
@@ -92,13 +90,11 @@ Some negatives, that must be removed. Good outcome for little input.
 More about the negative coefficients in product 9 1.
 >>> for c, w in zip(candidate_matrices.doit(8, 1)[27,0], FIB_WORDS[9]):
 ...     if c: print(c, CD_from_word(w))
--1 CCCDCDC
 1 DCCDCD
 1 DCDCCD
 
 >>> for c, w in zip(candidate_matrices.doit(8, 1)[28,0], FIB_WORDS[9]):
 ...     if c: print(c, CD_from_word(w))
--1 CCCDDCC
 1 DCCDDC
 
 More about the negative coefficients in product 9 4.
@@ -106,8 +102,6 @@ More about the negative coefficients in product 9 4.
 ...     if c: print(c, CD_from_word(w))
 2 CCCCDCD
 1 CCCCDDC
--2 CCCDCDC
--1 CCCDDCC
 2 DCCDCD
 1 DCCDDC
 1 DCDCCD
@@ -177,7 +171,10 @@ def candidate_12(word):
 def candidate_2(word):
     yield  b2 + word
 
-    if word in {'CDCD', 'CDDC'}:
+    if word in {
+            'CDCD', 'CDDC',
+            'CCDCD', 'CCDDC',
+    }:
         yield b1 + word + b1
     if 0:
         bits = candidate_2_split(word)
