@@ -187,6 +187,21 @@ from .rankmatrices import word_from_CD
 from .rankmatrices import CD_from_word
 from .rankmatrices import RankMatrices
 
+
+class mycheckset(set):
+    '''Like set, but raises ValueError if existing member added.
+    '''
+
+    def add(self, item):
+        if item in self:
+            raise ValueError(item, self)
+        set.add(self, item)
+
+    def update(self, items):
+        for item in items:
+            self.add(item)
+
+
 b_empty = b''
 b1 = b'\x01'
 b2 = b'\x02'
@@ -220,7 +235,7 @@ def shift_1_var(word):
 
 def apply_rule(rule, items):
 
-    value = set()
+    value = mycheckset()
     for src in items:
         for tgt in rule(src):
             value.add(tgt)
@@ -236,20 +251,6 @@ def sort_by_leading_1(words):
     )
 
     return tuple(pair[1] for pair in (pairs))
-
-
-class mycheckset(set):
-    '''Like set, but raises ValueError if existing member added.
-    '''
-
-    def add(self, item):
-        if item in self:
-            raise ValueError(item, self)
-        set.add(self, item)
-
-    def update(self, items):
-        for item in items:
-            self.add(item)
 
 
 def rules_factory(rule_11, rule_12, rule_2):
