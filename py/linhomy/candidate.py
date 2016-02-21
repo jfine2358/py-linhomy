@@ -176,10 +176,9 @@ def candidate_12(word):
 
 def candidate_2(word):
     yield  b2 + word
-    if word == 'CDCD':
-        yield 'CCDCDC'
-    elif word == 'CDDC':
-        yield 'CCDDCC'
+
+    if word in {'CDCD', 'CDDC'}:
+        yield b1 + word + b1
     if 0:
         bits = candidate_2_split(word)
         if bits != None:
