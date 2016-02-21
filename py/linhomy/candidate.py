@@ -74,7 +74,6 @@ Some negatives, that must be removed. Good outcome for little input.
 10 5 [(-2, 2), (-1, 1), (0, 5405), (1, 254), (2, 34)]
 
 
-TODO: More negatives to understand.
 More about the negative coefficients in product 10 1.
 >>> for n in [43]:
 ...     print('#', n, CD_from_word(FIB_WORDS[10][n]))
@@ -84,6 +83,53 @@ More about the negative coefficients in product 10 1.
 1 DCCDCCD
 1 DCDCCCD
 -1 DCDCCDC
+
+
+More about the negative coefficients in product 10 4.
+>>> for n in [3, 4]:
+...     print('#', n, CD_from_word(FIB_WORDS[10][n]))
+...     for c, w in zip(candidate_matrices.doit(6, 4)[n,1], FIB_WORDS[10]):
+...          if c: print(c, CD_from_word(w))
+# 3 CCCCCCDCC
+1 CCCDCCCD
+1 CCCDCCDC
+2 CCCDCDCC
+1 CCCDDCCC
+-1 CCDCCCDC
+-1 CCDCCDCC
+-2 CCDCDCCC
+-1 CCDDCCCC
+1 DCDCCCD
+1 DCDCCDC
+2 DCDCDCC
+1 DCDDCCC
+# 4 CCCCCCDD
+1 CCCDCDD
+1 CCCDDCD
+1 CCCDDDC
+-1 CCDCDDC
+-1 CCDDCDC
+-1 CCDDDCC
+1 DCDCDD
+1 DCDDCD
+1 DCDDDC
+
+
+More about the negative coefficients in product 10 5.
+>>> CD_from_word(FIB_WORDS[5][2])
+'CCDC'
+>>> for c, w in zip(candidate_matrices.doit(5, 5)[2][2], FIB_WORDS[10]):
+...     if c: print(c, CD_from_word(w))
+...
+2 CCCDCCDC
+2 CCCDCDCC
+1 CCCDDCCC
+-2 CCDCCDCC
+-2 CCDCDCCC
+-1 CCDDCCCC
+2 DCDCCDC
+2 DCDCDCC
+1 DCDDCCC
 '''
 
 
