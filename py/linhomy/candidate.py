@@ -12,6 +12,40 @@
 9 [(0, 4809), (1, 86)]
 10 [(-1, 2), (0, 12675), (1, 139)]
 
+Puzzle: Why are these negatives arising?
+
+Unexpected negatives for C-rule 8 investigated.
+>>> CD_from_word(FIB_WORDS[9][10])
+'CCCDCDC'
+>>> for c, w in zip(candidate_matrices.C_rule[8][10], FIB_WORDS[8]):
+...     if c: print(c, CD_from_word(w))
+1 CCDCDC
+-1 DCDCD
+
+>>> CD_from_word(FIB_WORDS[9][11])
+'CCCDDCC'
+>>> for c, w in zip(candidate_matrices.C_rule[8][11], FIB_WORDS[8]):
+...     if c: print(c, CD_from_word(w))
+1 CCDDCC
+-1 DCDDC
+
+
+Unexpected negatives for C-rule 10 investigated.
+>>> CD_from_word(FIB_WORDS[11][99])
+'DCCCDCDC'
+>>> for c, w in zip(candidate_matrices.C_rule[10][99], FIB_WORDS[10]):
+...     if c: print(c, CD_from_word(w))
+1 DCCDCDC
+-1 DDCDCD
+
+>>> CD_from_word(FIB_WORDS[11][100])
+'DCCCDDCC'
+>>> for c, w in zip(candidate_matrices.C_rule[10][100], FIB_WORDS[10]):
+...     if c: print(c, CD_from_word(w))
+1 DCCDDCC
+-1 DDCDDC
+
+
 As expected, all zeros and ones.
 >>> candidate_matrices.print_D_stats(10)
 0 [(0, 1), (1, 1)]
@@ -53,6 +87,42 @@ Some negatives, that must be removed. Good outcome for little input.
 10 3 [(0, 5368), (1, 225), (2, 12), (3, 2)]
 10 4 [(-2, 3), (-1, 9), (0, 5518), (1, 231), (2, 22), (3, 2)]
 10 5 [(-2, 5), (-1, 6), (0, 5417), (1, 239), (2, 29)]
+
+
+More about the negative coefficients in product 9 1.
+>>> for c, w in zip(candidate_matrices.doit(8, 1)[27,0], FIB_WORDS[9]):
+...     if c: print(c, CD_from_word(w))
+-1 CCCDCDC
+1 DCCDCD
+1 DCDCCD
+
+>>> for c, w in zip(candidate_matrices.doit(8, 1)[28,0], FIB_WORDS[9]):
+...     if c: print(c, CD_from_word(w))
+-1 CCCDDCC
+1 DCCDDC
+
+More about the negative coefficients in product 9 4.
+>>> for c, w in zip(candidate_matrices.doit(5, 4)[1,1], FIB_WORDS[9]):
+...     if c: print(c, CD_from_word(w))
+2 CCCCDCD
+1 CCCCDDC
+-2 CCCDCDC
+-1 CCCDDCC
+2 DCCDCD
+1 DCCDDC
+1 DCDCCD
+
+>>> for c, w in zip(candidate_matrices.doit(5, 4)[2,1], FIB_WORDS[9]):
+...     if c: print(c, CD_from_word(w))
+1 CCCDCCD
+2 CCCDCDC
+1 CCCDDCC
+-1 CCDCCDC
+-2 CCDCDCC
+-1 CCDDCCC
+1 DCDCCD
+2 DCDCDC
+1 DCDDCC
 '''
 
 
@@ -65,7 +135,9 @@ __metaclass__ = type
 
 import re
 
+from .fibonacci import FIB_WORDS
 from .rankmatrices import RankMatrices
+from .rankmatrices import CD_from_word
 from .cdr_matrices import b_empty
 from .cdr_matrices import b1
 from .cdr_matrices import b2
